@@ -1,0 +1,284 @@
+/* Collegiate Navy & Crimson Professional Palette */
+:root {
+  --sb-navy: #0f294a;
+  --sb-navy-mid: #1e3a8a;
+  --sb-crimson: #b91c1c;
+  --sb-gold: #f59e0b;
+  --sb-bg: #f4f7fb;
+  --sb-surface: #ffffff;
+  --sb-tint: #eef4ff;
+  --sb-border: #dbe4f0;
+}
+
+body {
+  background-color: var(--sb-bg);
+  color: #1e293b;
+}
+
+/* Navbar styling */
+.navbar {
+  background: linear-gradient(120deg, var(--sb-navy) 0%, var(--sb-navy-mid) 100%) !important;
+  border-bottom: 3px solid var(--sb-gold);
+  box-shadow: 0 2px 10px rgba(15, 41, 74, 0.15);
+}
+
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.navbar-nav .nav-link.active,
+.navbar-nav .nav-link:hover {
+  color: #fde68a !important;
+}
+
+/* Main content card feel & headings */
+main.content {
+  background: var(--sb-surface);
+  border: 1px solid var(--sb-border);
+  border-radius: 0.85rem;
+  padding: 2rem 2.25rem;
+  margin-top: 1.25rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 18px rgba(15, 41, 74, 0.05);
+}
+
+#title-block-header {
+  border-bottom: 2px solid var(--sb-tint);
+  padding-bottom: 0.85rem;
+  margin-bottom: 1.4rem;
+}
+
+h1.title {
+  color: var(--sb-navy);
+  font-weight: 800;
+}
+
+.subtitle.lead {
+  color: #475569;
+  font-size: 1.08rem;
+}
+
+h2 {
+  color: var(--sb-navy);
+  font-weight: 700;
+  border-left: 4px solid var(--sb-crimson);
+  padding-left: 0.65rem;
+  margin-top: 1.85rem;
+}
+
+a {
+  color: var(--sb-navy-mid);
+}
+
+a:hover {
+  color: var(--sb-crimson);
+}
+
+.player-explorer-controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.85rem;
+  background: linear-gradient(180deg, #f8fbff 0%, #eef4fc 100%);
+  border: 1px solid var(--sb-border);
+  border-top: 3px solid var(--sb-navy-mid);
+  border-radius: 0.65rem;
+  padding: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.player-control-group label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 0.3rem;
+}
+
+.player-control-group input,
+.player-control-group select {
+  width: 100%;
+  padding: 0.48rem 0.65rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.4rem;
+  font-size: 0.95rem;
+  background: #ffffff;
+}
+
+.player-match-count {
+  font-size: 0.85rem;
+  color: #6c757d;
+  margin-bottom: 0.75rem;
+}
+
+.player-card {
+  border: 1px solid #dee2e6;
+  border-radius: 0.75rem;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 1.35rem;
+}
+
+.player-card-header {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e9ecef;
+  margin-bottom: 1.1rem;
+}
+
+.player-logo-wrap {
+  position: relative;
+  width: 88px;
+  height: 88px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #f8f9fa;
+  border: 2px solid #e9ecef;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+.player-logo-wrap img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.player-initials-badge {
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  background: #2c3e50;
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.player-title h3 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.45rem;
+}
+
+.player-college-badge {
+  display: inline-block;
+  background: #e9f2ff;
+  color: #1d4ed8;
+  font-weight: 600;
+  font-size: 0.88rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+
+.player-seasons-pill {
+  display: inline-block;
+  margin-left: 0.4rem;
+  background: #f1f3f5;
+  color: #495057;
+  font-size: 0.82rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+}
+
+.player-highlights {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(95px, 1fr));
+  gap: 0.65rem;
+  margin-bottom: 1.15rem;
+}
+
+.stat-tile {
+  background: linear-gradient(180deg, #ffffff 0%, #f4f8ff 100%);
+  border: 1px solid #d5e2f2;
+  border-top: 3px solid var(--sb-crimson);
+  border-radius: 0.55rem;
+  padding: 0.6rem 0.65rem;
+  text-align: center;
+  box-shadow: 0 1px 4px rgba(15, 41, 74, 0.04);
+}
+
+.stat-tile-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.stat-tile-value {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--sb-navy);
+}
+
+.player-logos-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.stat-tile-sub {
+  font-size: 0.72rem;
+  color: #6c757d;
+  margin-top: 0.2rem;
+}
+
+.player-stats-table tr.combined-row td {
+  background: #f8f9fa;
+  font-weight: 700;
+  border-top: 2px solid #dee2e6;
+}
+
+.player-stats-table tr.missing-season-row td {
+  color: #adb5bd;
+  font-style: italic;
+}
+
+.player-stats-table-wrap {
+  overflow-x: auto;
+}
+
+.player-stats-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.player-stats-table th,
+.player-stats-table td {
+  padding: 0.48rem 0.55rem;
+  text-align: right;
+  border-bottom: 1px solid #e9ecef;
+  white-space: nowrap;
+}
+
+.player-stats-table th:first-child,
+.player-stats-table td:first-child {
+  text-align: left;
+  font-weight: 600;
+}
+
+.player-stats-table thead th {
+  background: #eef4fc;
+  color: var(--sb-navy);
+  font-weight: 700;
+  border-bottom: 2px solid #cbd9ec;
+}
+
+table.table thead th,
+main.content table thead th {
+  background: #eef4fc;
+  color: var(--sb-navy);
+}
+

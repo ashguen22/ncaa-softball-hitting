@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.19">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Inside NCAA Division I Softball Hitting (2021–2022) – NCAA D1 Softball Hitting</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-f1adfd7b7efbc32d57e89763ce75fbee.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.12.1/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<script src="site_libs/jquery-3.5.1/jquery.min.js"></script>
+<link href="site_libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet">
+<script src="site_libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-2.25.2/plotly-htmlwidgets.css" rel="stylesheet">
+<script src="site_libs/plotly-main-2.25.2/plotly-latest.min.js"></script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">NCAA D1 Softball Hitting</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./players.html"> 
+<span class="menu-text">Players</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./hitting.html"> 
+<span class="menu-text">Hitting Graphs</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./story.html"> 
+<span class="menu-text">Power Hitting</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./transfers.html"> 
+<span class="menu-text">Transfers &amp; Breakouts</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./speed.html"> 
+<span class="menu-text">Speed &amp; Power</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#college-softballs-best-lineups-20212022" id="toc-college-softballs-best-lineups-20212022" class="nav-link active" data-scroll-target="#college-softballs-best-lineups-20212022">College Softball’s Best Lineups (2021–2022)</a></li>
+  <li><a href="#explore-the-site" id="toc-explore-the-site" class="nav-link" data-scroll-target="#explore-the-site">Explore the Site</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Inside NCAA Division I Softball Hitting (2021–2022)</h1>
+<p class="subtitle lead">Exploring Contact, Power, Speed, and the Transfer Portal Across 302 College Programs</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Welcome! What makes an elite college softball offense—putting the bat on the ball, swinging for the fences, stealing every base in sight, or landing a star from the transfer portal? Using <strong>4,406 individual player-seasons</strong> across <strong>302 NCAA Division I programs</strong> from the 2021 and 2022 seasons, this site lets you dig into the stories and interactive tools behind modern college softball hitting.</p>
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:0.8rem; margin:1.25rem 0 1.5rem 0;">
+<div class="stat-tile">
+<div class="stat-tile-label">
+<p>Player-Seasons</p>
+</div>
+<div class="stat-tile-value">
+<p>4,406</p>
+</div>
+<div class="stat-tile-sub">
+<p>2021 &amp; 2022 NCAA D1</p>
+</div>
+</div>
+<div class="stat-tile">
+<div class="stat-tile-label">
+<p>D1 Colleges</p>
+</div>
+<div class="stat-tile-value">
+<p>302</p>
+</div>
+<div class="stat-tile-sub">
+<p>Every D1 conference</p>
+</div>
+</div>
+<div class="stat-tile">
+<div class="stat-tile-label">
+<p>Total Hits</p>
+</div>
+<div class="stat-tile-value">
+<p>155,722</p>
+</div>
+<div class="stat-tile-sub">
+<p>.279 average BA</p>
+</div>
+</div>
+<div class="stat-tile">
+<div class="stat-tile-label">
+<p>Home Runs</p>
+</div>
+<div class="stat-tile-value">
+<p>16,827</p>
+</div>
+<div class="stat-tile-sub">
+<p>Led by Oklahoma (303)</p>
+</div>
+</div>
+<div class="stat-tile">
+<div class="stat-tile-label">
+<p>Stolen Bases</p>
+</div>
+<div class="stat-tile-value">
+<p>21,328</p>
+</div>
+<div class="stat-tile-sub">
+<p>83.5% success rate</p>
+</div>
+</div>
+</div>
+<section id="college-softballs-best-lineups-20212022" class="level2">
+<h2 class="anchored" data-anchor-id="college-softballs-best-lineups-20212022">College Softball’s Best Lineups (2021–2022)</h2>
+<p>Before diving into individual players, hover over the bars below to see the <strong>15 strongest single-season college lineups</strong> of 2021 and 2022, ranked by plate-appearance-weighted <code>OPS</code> (On-Base Plus Slugging, which combines getting on base with hitting for extra bases). Back-to-back national champion <strong>Oklahoma</strong> holds the top two spots by a wide margin.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="htmlwidget-7a5f8809350bc4c9964c" style="width:100%;height:454px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-7a5f8809350bc4c9964c">{"x":{"data":[{"orientation":"v","width":[1.2805330033003299,1.0835538585209004,1.0657486449864499,1.0479095890410959,1.0280217391304347,1.0263705834018078],"base":[14.640000000000001,9.6400000000000006,7.6399999999999997,5.6399999999999997,2.6400000000000001,1.6400000000000001],"x":[0.64026650165016497,0.54177692926045018,0.53287432249322497,0.52395479452054794,0.51401086956521735,0.51318529170090388],"y":[0.71999999999999886,0.71999999999999886,0.71999999999999975,0.72000000000000064,0.71999999999999975,0.71999999999999975],"text":["<b>Oklahoma (2021)<\/b><br>Weighted OPS: 1.281<br>Team Batting Avg: 0.405<br>Home Runs: 154<br>Stolen Bases: 58","<b>Arizona (2021)<\/b><br>Weighted OPS: 1.084<br>Team Batting Avg: 0.351<br>Home Runs: 85<br>Stolen Bases: 14","<b>Miami (OH) (2021)<\/b><br>Weighted OPS: 1.066<br>Team Batting Avg: 0.349<br>Home Runs: 74<br>Stolen Bases: 71","<b>Arizona State (2021)<\/b><br>Weighted OPS: 1.048<br>Team Batting Avg: 0.322<br>Home Runs: 76<br>Stolen Bases: 38","<b>UCLA (2021)<\/b><br>Weighted OPS: 1.028<br>Team Batting Avg: 0.330<br>Home Runs: 66<br>Stolen Bases: 54","<b>Cal State Fullerton (2021)<\/b><br>Weighted OPS: 1.026<br>Team Batting Avg: 0.353<br>Home Runs: 57<br>Stolen Bases: 75"],"type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(29,78,216,1)","line":{"width":1.8897637795275593,"color":"transparent"}},"name":"2021","legendgroup":"2021","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":[1.2527174530983511,1.1500364511691885,1.1405599001663893,1.1215629973474801,1.0726382488479262,1.0584269319051263,1.0459887876664331,1.0424573960463532,1.0234378698224853],"base":[13.640000000000001,12.640000000000001,11.640000000000001,10.640000000000001,8.6400000000000006,6.6399999999999997,4.6399999999999997,3.6400000000000001,0.64000000000000001],"x":[0.62635872654917557,0.57501822558459426,0.57027995008319465,0.56078149867374005,0.53631912442396312,0.52921346595256313,0.52299439383321655,0.52122869802317662,0.51171893491124265],"y":[0.71999999999999886,0.71999999999999886,0.71999999999999886,0.71999999999999886,0.71999999999999886,0.72000000000000064,0.72000000000000064,0.7200000000000002,0.71999999999999986],"text":["<b>Oklahoma (2022)<\/b><br>Weighted OPS: 1.253<br>Team Batting Avg: 0.382<br>Home Runs: 149<br>Stolen Bases: 49","<b>Wichita State (2022)<\/b><br>Weighted OPS: 1.150<br>Team Batting Avg: 0.361<br>Home Runs: 111<br>Stolen Bases: 46","<b>Arizona State (2022)<\/b><br>Weighted OPS: 1.141<br>Team Batting Avg: 0.337<br>Home Runs: 89<br>Stolen Bases: 31","<b>Arkansas (2022)<\/b><br>Weighted OPS: 1.122<br>Team Batting Avg: 0.354<br>Home Runs: 103<br>Stolen Bases: 30","<b>UL Lafayette (2022)<\/b><br>Weighted OPS: 1.073<br>Team Batting Avg: 0.355<br>Home Runs: 69<br>Stolen Bases: 80","<b>BYU (2022)<\/b><br>Weighted OPS: 1.058<br>Team Batting Avg: 0.346<br>Home Runs: 64<br>Stolen Bases: 41","<b>Duke (2022)<\/b><br>Weighted OPS: 1.046<br>Team Batting Avg: 0.336<br>Home Runs: 82<br>Stolen Bases: 74","<b>Georgia (2022)<\/b><br>Weighted OPS: 1.042<br>Team Batting Avg: 0.333<br>Home Runs: 89<br>Stolen Bases: 35","<b>Kentucky (2022)<\/b><br>Weighted OPS: 1.023<br>Team Batting Avg: 0.345<br>Home Runs: 76<br>Stolen Bases: 44"],"type":"bar","textposition":"none","marker":{"autocolorscale":false,"color":"rgba(185,28,28,1)","line":{"width":1.8897637795275593,"color":"transparent"}},"name":"2022","legendgroup":"2022","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":60,"r":25,"b":55,"l":135},"paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"title":{"text":"Top 15 NCAA D1 Softball Offenses by Weighted OPS (2021–2022)","font":{"color":"rgba(0,0,0,1)","family":"","size":17.534246575342468},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.82650000000000001,1.3435000000000001],"tickmode":"array","ticktext":["0.9","1.0","1.1","1.2","1.3"],"tickvals":[0.90000000000000002,1,1.1000000000000001,1.2000000000000002,1.3],"categoryorder":"array","categoryarray":["0.9","1.0","1.1","1.2","1.3"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716894984},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"y","title":{"text":"Lineup Weighted OPS (On-Base + Slugging)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.40000000000000002,15.6],"tickmode":"array","ticktext":["Kentucky ('22)","Cal State Fullerton ('21)","UCLA ('21)","Georgia ('22)","Duke ('22)","Arizona State ('21)","BYU ('22)","Miami (OH) ('21)","UL Lafayette ('22)","Arizona ('21)","Arkansas ('22)","Arizona State ('22)","Wichita State ('22)","Oklahoma ('22)","Oklahoma ('21)"],"tickvals":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],"categoryorder":"array","categoryarray":["Kentucky ('22)","Cal State Fullerton ('21)","UCLA ('21)","Georgia ('22)","Duke ('22)","Arizona State ('21)","BYU ('22)","Miami (OH) ('21)","UL Lafayette ('22)","Arizona ('21)","Arkansas ('22)","Arizona State ('22)","Wichita State ('22)","Oklahoma ('22)","Oklahoma ('21)"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"x","title":{"text":"","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"shapes":[],"showlegend":true,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716894984},"title":{"text":"Season","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}}},"hovermode":"closest","height":470,"barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"f23c7d8750cb":{"x":{},"y":{},"fill":{},"text":{},"type":"bar"}},"cur_data":"f23c7d8750cb","visdat":{"f23c7d8750cb":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="explore-the-site" class="level2">
+<h2 class="anchored" data-anchor-id="explore-the-site">Explore the Site</h2>
+<p>Pick any tab in the navigation bar—or jump straight in below:</p>
+<ul>
+<li><strong><a href="./players.html">Players</a> <em>(Interactive Explorer)</em>:</strong> Search all 3,200+ players and 302 colleges across 2021 and 2022, complete with school crests, transfer badges, and combined career lines.</li>
+<li><strong><a href="./hitting.html">Hitting Graphs</a> <em>(Interactive Explorer)</em>:</strong> Test how strikeouts (<code>K</code>) affect batting average (<code>BA</code>) across both seasons and hover to inspect outliers.</li>
+<li><strong><a href="./story.html">Power Hitting</a> <em>(Data Story)</em>:</strong> Discover why home-run power normally costs strikeouts—and how Oklahoma’s Jocelyn Alo and Tiare Jennings broke that rule completely.</li>
+<li><strong><a href="./transfers.html">Transfers &amp; Breakouts</a> <em>(Story + Explorer)</em>:</strong> Follow the 72 players who switched Division I colleges between 2021 and 2022, compare them with 1,063 returning teammates, and browse the biggest year-over-year breakouts.</li>
+<li><strong><a href="./speed.html">Speed &amp; Power</a> <em>(Story + Explorer)</em>:</strong> See why college runners succeed on 83.5% of steal attempts on 60-foot basepaths, and meet the ultra-rare “15 HR / 15 SB” club.</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
