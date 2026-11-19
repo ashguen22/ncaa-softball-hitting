@@ -1,0 +1,148 @@
+---
+title: "Speed & Power on 60-Foot Bases"
+subtitle: "Why Most Standout Hitters Pick Either Home Runs or Stolen Bases—and the Few Who Do Both"
+execute:
+  echo: false
+  message: false
+  warning: false
+---
+
+```{r}
+library(tidyverse)
+library(plotly)
+
+prep_standouts <- \(df, yr) {
+  df |>
+    mutate(Season = yr) |>
+    filter(HR >= 10 | SB >= 15) |>
+    mutate(
+      Attempts = SB + CS,
+      SBPct = if_else(Attempts > 0, SB / Attempts, NA_real_),
+      Role = case_when(
+        HR >= 10 & SB >= 15 ~ "Dual Threat (Both)",
+        HR >= 10 ~ "Power (10+ HR)",
+        TRUE ~ "Speed (15+ SB)"
+      ),
+      Role = factor(
+        Role,
+        levels = c(
+          "Power (10+ HR)",
+          "Speed (15+ SB)",
+          "Dual Threat (Both)"
+        )
+      )
+    )
+}
+
+standouts_2021 <- read_csv("batting2021.csv") |> prep_standouts(2021L)
+standouts_2022 <- read_csv("batting2022.csv") |> prep_standouts(2022L)
+all_standouts <- bind_rows(standouts_2021, standouts_2022)
+```
+
+In NCAA Division I softball, where bases sit just **60 feet apart**, base stealers succeed **83.5% of the time** (21,328 steals in 25,535 tries across 2021 and 2022). Yet hitting for power and stealing bases usually belong to completely different types of players.
+
+To make that L-shaped split easy to see without thousands of low-volume bench rows cluttering the corner, the two charts below focus on college softball's **standout power and speed threats**—every player who either hit **10+ home runs** or stole **15+ bases**:
+
+- **Blue dots (left side):** **Power Hitters** who crush 10+ home runs a year but rarely steal.
+- **Green dots (bottom):** **Speed Threats**—often slap hitters—who steal 15 to 59 bases while hitting very few home runs.
+- **Red dots (middle/top-right):** Rare **Dual-Threat Stars** who reach *both* 10+ home runs and 15+ stolen bases in the same season.
+
+## 2021 Season: Speed vs. Power
+
+```{r}
+make_speed_power_plot <- \(df, plot_title) {
+  p <- df |>
+    arrange(Role) |>
+    ggplot(aes(
+      x = SB,
+      y = HR,
+      color = Role,
+      size = Role,
+      text = paste0(
+        "<b>", Player, " (", Team, ")</b>",
+        "<br>Role: ", Role,
+        "<br>Home Runs: ", HR,
+        "<br>Stolen Bases: ", SB, " (", CS, " caught",
+        if_else(!is.na(SBPct), paste0(", ", round(100 * SBPct, 1), "%"), ""), ")",
+        "<br>Batting Avg: ", sprintf("%.3f", BA), " | OPS: ", sprintf("%.3f", OPS)
+      )
+    )) +
+    geom_vline(xintercept = 15, linetype = "dashed", color = "gray60") +
+    geom_hline(yintercept = 10, linetype = "dashed", color = "gray60") +
+    geom_point(alpha = 0.8) +
+    scale_color_manual(
+      values = c(
+        "Power (10+ HR)" = "#1d4ed8",
+        "Speed (15+ SB)" = "#059669",
+        "Dual Threat (Both)" = "#dc2626"
+      ),
+      name = NULL
+    ) +
+    scale_size_manual(
+      values = c(
+        "Power (10+ HR)" = 2.3,
+        "Speed (15+ SB)" = 2.3,
+        "Dual Threat (Both)" = 3.5
+      ),
+      guide = "none"
+    ) +
+    labs(
+      title = plot_title,
+      x = "Stolen Bases (SB)",
+      y = "Home Runs (HR)"
+    ) +
+    theme_minimal()
+
+  ggplotly(p, tooltip = "text", height = 450) |>
+    layout(
+      margin = list(t = 60, b = 90, l = 60, r = 25),
+      legend = list(
+        orientation = "h",
+        x = 0.5,
+        xanchor = "center",
+        y = -0.22
+      )
+    )
+}
+
+make_speed_power_plot(
+  standouts_2021,
+  "2021 Standout Threats: Power (10+ HR) vs. Speed (15+ SB)"
+)
+```
+
+In 2021 (331 standout hitters), notice how cleanly the blue and green dots separate along the two axes: Oklahoma's **Jocelyn Alo** sits high on the left (34 HRs, 0 SBs), while Central Arkansas's **Jenna Wildeman** stretches all the way to the right along zero (0 HRs, 56 SBs). Only **13 players** in the country reached the red dual-threat zone, led by Miami (OH)'s **Karli Spaid** (17 HRs, 19 SBs) and Eastern Illinois's **Megan Burton** (19 HRs, 17 SBs).
+
+## 2022 Season: Speed vs. Power
+
+```{r}
+make_speed_power_plot(
+  standouts_2022,
+  "2022 Standout Threats: Power (10+ HR) vs. Speed (15+ SB)"
+)
+```
+
+In 2022 (433 standout hitters), the dual-threat group grew to **16 players**—highlighted by Wichita State's **Addison Barnard**, who sits way up in the top middle with **33 home runs and 25 stolen bases**, alongside Northwestern's **Rachel Lewis** (23 HRs, 25 SBs) and Tennessee's **Kiki Milloy** (15 HRs, 31 SBs). Meanwhile, USF speedster **Alexis Johns** pushed pure base stealing even further on the bottom right with **59 steals in 61 tries** and zero home runs.
+
+## The Elite 15 HR / 15 SB Club (2021–2022)
+
+Raise the bar to **at least 15 home runs and 15 stolen bases** in a single season, and only **7 player-seasons out of 4,406** across both years made the cut:
+
+```{r}
+club_15_15 <- all_standouts |>
+  filter(HR >= 15, SB >= 15) |>
+  arrange(desc(OPS)) |>
+  transmute(
+    Player,
+    College = Team,
+    Season,
+    HR,
+    `SB-CS` = paste0(SB, "-", CS),
+    `SB%` = paste0(round(100 * SBPct, 1), "%"),
+    BA = sprintf("%.3f", BA),
+    OBP = sprintf("%.3f", OBP),
+    OPS = sprintf("%.3f", OPS)
+  )
+
+knitr::kable(club_15_15, align = c("l", "l", "c", "r", "r", "r", "r", "r", "r"))
+```

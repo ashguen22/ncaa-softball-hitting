@@ -1,0 +1,230 @@
+---
+title: "Transfers & Breakout Stars"
+subtitle: "Did Changing Colleges Actually Boost Hitting Between 2021 and 2022?"
+execute:
+  echo: false
+  message: false
+  warning: false
+---
+
+```{r}
+library(tidyverse)
+library(plotly)
+library(jsonlite)
+library(htmltools)
+
+b21 <- read_csv("batting2021.csv") |>
+  add_count(Player) |>
+  filter(n == 1L) |>
+  select(-n)
+
+b22 <- read_csv("batting2022.csv") |>
+  add_count(Player) |>
+  filter(n == 1L) |>
+  select(-n)
+
+both_years <- inner_join(b21, b22, by = "Player", suffix = c("_21", "_22")) |>
+  mutate(
+    Status = if_else(Team_21 != Team_22, "Transferred Schools (72)", "Same School (1,063)"),
+    Transferred = Team_21 != Team_22,
+    dOPS = round(OPS_22 - OPS_21, 3),
+    dBA = round(BA_22 - BA_21, 3),
+    dHR = HR_22 - HR_21
+  )
+```
+
+With the rise of the NCAA transfer portal, it is easy to assume that switching colleges automatically unlocks bigger numbers at the plate. Across the **1,135 players** who recorded full Division I seasons in both 2021 and 2022, **72 switched Division I programs** while **1,063 stayed at the same college**.
+
+The data tells a surprising two-part story:
+
+1. **Transfers were already above-average hitters before leaving.** Players who changed schools averaged a **.847 OPS** in 2021—well ahead of the **.801 OPS** posted by players who stayed put.
+2. **Changing jerseys wasn't an automatic boost—but the right fit created superstars.** On average, transfers gained just **+0.003 OPS** in 2022 (compared to **+0.016 OPS** for returning players), because many moved up into tougher pitching conferences. Yet when a transfer found the right lineup, the leap was dramatic: **KB Sides** transferred from Alabama to Arkansas and jumped from **0 home runs (.811 OPS)** to **13 home runs (1.212 OPS)**, while **Alyssa Brito** moved from Oregon to Oklahoma and climbed from **.936** to **1.190 OPS** (14 HRs).
+
+## Interactive 2021 vs. 2022 OPS Comparison
+
+Every dot **above the dashed diagonal line** improved her `OPS` from 2021 to 2022. Hover over any player to see her two-year stats, or **click a group in the legend** to isolate the 72 transfers!
+
+```{r}
+p_transfers <- both_years |>
+  arrange(Transferred) |>
+  ggplot(aes(
+    x = OPS_21,
+    y = OPS_22,
+    color = Status,
+    size = Transferred,
+    text = paste0(
+      "<b>", Player, "</b>",
+      "<br>", if_else(Transferred, paste0(Team_21, " → ", Team_22), Team_22),
+      "<br>2021 OPS: ", sprintf("%.3f", OPS_21), " (", HR_21, " HR, ", sprintf("%.3f", BA_21), " BA)",
+      "<br>2022 OPS: ", sprintf("%.3f", OPS_22), " (", HR_22, " HR, ", sprintf("%.3f", BA_22), " BA)",
+      "<br>Change in OPS: ", if_else(dOPS >= 0, paste0("+", sprintf("%.3f", dOPS)), sprintf("%.3f", dOPS))
+    )
+  )) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "gray45") +
+  geom_point(alpha = 0.7) +
+  scale_color_manual(
+    values = c(
+      "Same School (1,063)" = "#94a3b8",
+      "Transferred Schools (72)" = "#dc2626"
+    ),
+    name = NULL
+  ) +
+  scale_size_manual(values = c(`FALSE` = 1.8, `TRUE` = 3.0), guide = "none") +
+  labs(
+    title = "Year-over-Year Hitting: 2021 OPS vs. 2022 OPS",
+    x = "2021 Season OPS",
+    y = "2022 Season OPS"
+  ) +
+  theme_minimal()
+
+ggplotly(p_transfers, tooltip = "text", height = 460) |>
+  layout(
+    margin = list(t = 60, b = 90, l = 60, r = 25),
+    legend = list(
+      orientation = "h",
+      x = 0.5,
+      xanchor = "center",
+      y = -0.22
+    )
+  )
+```
+
+## Search Transfers & Biggest Breakout Hitters
+
+Use the controls below to browse all **72 D1-to-D1 transfers**, see who made the biggest single-season `OPS` and home-run jumps across the country, or search for your favorite school.
+
+```{r}
+table_rows <- both_years |>
+  filter(PA_21 >= 40, PA_22 >= 40) |>
+  transmute(
+    Player,
+    Team21 = Team_21,
+    Team22 = Team_22,
+    Transferred,
+    BA21 = BA_21,
+    BA22 = BA_22,
+    HR21 = HR_21,
+    HR22 = HR_22,
+    dHR,
+    OPS21 = OPS_21,
+    OPS22 = OPS_22,
+    dOPS
+  ) |>
+  arrange(desc(dOPS))
+
+transfer_json <- toJSON(table_rows, dataframe = "rows", auto_unbox = TRUE)
+
+tagList(
+  tags$div(
+    class = "player-explorer-controls",
+    tags$div(
+      class = "player-control-group",
+      tags$label(`for` = "tr-view", "Leaderboard View"),
+      tags$select(
+        id = "tr-view",
+        tags$option(value = "transfers", "All D1 Transfers (Sorted by 2022 OPS)"),
+        tags$option(value = "transfer_gain", "D1 Transfers: Biggest OPS Jump"),
+        tags$option(value = "all_breakout", "All Players: Top 50 OPS Breakouts"),
+        tags$option(value = "hr_jump", "All Players: Top 50 Home Run Jumps")
+      )
+    ),
+    tags$div(
+      class = "player-control-group",
+      tags$label(`for` = "tr-search", "Filter by Player or College"),
+      tags$input(
+        id = "tr-search",
+        type = "search",
+        placeholder = "e.g. Arkansas, Oklahoma, KB Sides..."
+      )
+    )
+  ),
+  tags$div(id = "tr-count", class = "player-match-count"),
+  tags$div(
+    class = "player-card",
+    tags$div(
+      class = "player-stats-table-wrap",
+      tags$table(
+        class = "player-stats-table",
+        tags$thead(
+          tags$tr(
+            tags$th("Player"),
+            tags$th("2021 → 2022 College"),
+            tags$th("'21 BA"),
+            tags$th("'22 BA"),
+            tags$th("'21 HR"),
+            tags$th("'22 HR"),
+            tags$th("HR +/-"),
+            tags$th("'21 OPS"),
+            tags$th("'22 OPS"),
+            tags$th("OPS +/-")
+          )
+        ),
+        tags$tbody(id = "tr-tbody")
+      )
+    )
+  ),
+  tags$script(id = "tr-data", type = "application/json", HTML(transfer_json)),
+  tags$script(HTML("
+    (function() {
+      const rows = JSON.parse(document.getElementById('tr-data').textContent);
+      const viewSel = document.getElementById('tr-view');
+      const searchIn = document.getElementById('tr-search');
+      const countEl = document.getElementById('tr-count');
+      const tbody = document.getElementById('tr-tbody');
+
+      function fmt3(x) { return Number(x).toFixed(3); }
+      function fmtSigned(x, digits) {
+        const v = Number(x);
+        const s = digits > 0 ? v.toFixed(digits) : String(v);
+        return v > 0 ? '+' + s : s;
+      }
+
+      function render() {
+        const mode = viewSel.value;
+        const q = searchIn.value.trim().toLowerCase();
+        let list = rows.filter(r => {
+          if ((mode === 'transfers' || mode === 'transfer_gain') && !r.Transferred) return false;
+          if (!q) return true;
+          return (r.Player + ' ' + r.Team21 + ' ' + r.Team22).toLowerCase().includes(q);
+        });
+
+        if (mode === 'transfers') {
+          list.sort((a, b) => b.OPS22 - a.OPS22);
+        } else if (mode === 'transfer_gain' || mode === 'all_breakout') {
+          list.sort((a, b) => b.dOPS - a.dOPS);
+          if (mode === 'all_breakout' && !q) list = list.slice(0, 50);
+        } else if (mode === 'hr_jump') {
+          list.sort((a, b) => b.dHR - a.dHR || b.HR22 - a.HR22);
+          if (!q) list = list.slice(0, 50);
+        }
+
+        countEl.textContent = `Showing ${list.length} player${list.length === 1 ? '' : 's'} (min. 40 PA each season)`;
+
+        tbody.innerHTML = list.map(r => {
+          const schoolLabel = r.Transferred
+            ? `<strong>${r.Team21} &rarr; ${r.Team22}</strong>`
+            : `${r.Team22}`;
+          const opsColor = r.dOPS > 0 ? '#15803d' : (r.dOPS < 0 ? '#b91c1c' : '#495057');
+          const hrColor = r.dHR > 0 ? '#15803d' : (r.dHR < 0 ? '#b91c1c' : '#495057');
+          return `<tr>
+            <td>${r.Player}</td>
+            <td style='text-align:left;'>${schoolLabel}</td>
+            <td>${fmt3(r.BA21)}</td>
+            <td>${fmt3(r.BA22)}</td>
+            <td>${r.HR21}</td>
+            <td>${r.HR22}</td>
+            <td style='color:${hrColor};font-weight:600;'>${fmtSigned(r.dHR, 0)}</td>
+            <td>${fmt3(r.OPS21)}</td>
+            <td><strong>${fmt3(r.OPS22)}</strong></td>
+            <td style='color:${opsColor};font-weight:700;'>${fmtSigned(r.dOPS, 3)}</td>
+          </tr>`;
+        }).join('');
+      }
+
+      viewSel.addEventListener('change', render);
+      searchIn.addEventListener('input', render);
+      render();
+    })();
+  "))
+)
+```

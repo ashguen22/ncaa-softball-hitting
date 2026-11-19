@@ -1,0 +1,399 @@
+---
+title: "About the Players"
+execute:
+  echo: false
+  message: false
+  warning: false
+---
+
+Search for any NCAA Division I softball player across **both the 2021 and 2022 seasons** using the search bar, filter by college or season, or select a player from the dropdown menu to view their college crest and complete 2021, 2022, and combined statistics.
+
+```{r}
+library(tidyverse)
+library(jsonlite)
+library(htmltools)
+
+# Read the 2021 and 2022 batting datasets
+batting_2021 <- read_csv("batting2021.csv")
+batting_2022 <- read_csv("batting2022.csv")
+
+# Combine 2021 and 2022 seasons and link players across both years (including transfers)
+all_batting <- bind_rows(
+  batting_2021 |> mutate(Season = 2021L),
+  batting_2022 |> mutate(Season = 2022L)
+) |>
+  group_by(Player) |>
+  mutate(
+    PlayerKey = if (n() == 2L && n_distinct(Season) == 2L) {
+      Player
+    } else {
+      paste0(Player, "||", Team)
+    }
+  ) |>
+  ungroup() |>
+  arrange(Player, Season, Team)
+
+teams <- sort(unique(all_batting$Team))
+
+# Normalize school names to match NCAA logo URLs from ESPN's public teams endpoint
+norm_name <- \(s) {
+  gsub("[^a-z0-9]", "", tolower(iconv(gsub("&", "and", s), to = "ASCII//TRANSLIT")))
+}
+
+team_logos <- tryCatch({
+  espn <- fromJSON(
+    "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams?limit=1000"
+  )
+  tdf <- espn$sports$leagues[[1]]$teams[[1]]$team
+  espn_urls <- paste0("https://a.espncdn.com/i/teamlogos/ncaa/500/", tdf$id, ".png")
+
+  map_df <- bind_rows(
+    tibble(k = norm_name(tdf$location), url = espn_urls),
+    tibble(k = norm_name(tdf$shortDisplayName), url = espn_urls),
+    tibble(k = norm_name(tdf$abbreviation), url = espn_urls)
+  ) |>
+    filter(!is.na(k), k != "") |>
+    distinct(k, .keep_all = TRUE)
+
+  aliases <- c(
+    "Albany" = "UAlbany",
+    "Appalachian State" = "App State",
+    "College of Charleston" = "Charleston",
+    "Connecticut" = "UConn",
+    "CSU Bakersfield" = "Cal State Bakersfield",
+    "Detroit" = "Detroit Mercy",
+    "Fort Wayne" = "Purdue Fort Wayne",
+    "Illinois-Chicago" = "UIC",
+    "IUPUI" = "IU Indianapolis",
+    "Mississippi Valley" = "Mississippi Valley State",
+    "Saint Mary's (CA)" = "Saint Mary's",
+    "Sam Houston State" = "Sam Houston",
+    "Seattle" = "Seattle U",
+    "Southeast Missouri" = "Southeast Missouri State",
+    "Southeastern Louisiana" = "SE Louisiana",
+    "St. Thomas (MN)" = "St. Thomas-Minnesota",
+    "UL Lafayette" = "Louisiana",
+    "USC Upstate" = "South Carolina Upstate"
+  )
+  manual_urls <- c(
+    "Hartford" = "https://a.espncdn.com/i/teamlogos/ncaa/500/44.png",
+    "Saint Francis" = "https://a.espncdn.com/i/teamlogos/ncaa/500/2598.png"
+  )
+
+  lookup <- setNames(map_df$url, map_df$k)
+  keys <- norm_name(coalesce(unname(aliases[teams]), teams))
+  urls <- coalesce(unname(manual_urls[teams]), unname(lookup[keys]), "")
+  setNames(as.list(urls), teams)
+}, error = \(e) {
+  setNames(as.list(rep("", length(teams))), teams)
+})
+
+payload_json <- toJSON(
+  list(rows = all_batting, logos = team_logos),
+  dataframe = "rows",
+  auto_unbox = TRUE
+)
+
+tagList(
+  tags$div(
+    class = "player-explorer-controls",
+    tags$div(
+      class = "player-control-group",
+      tags$label(`for` = "player-search", "Search Player or College"),
+      tags$input(
+        id = "player-search",
+        type = "search",
+        placeholder = "Type a player name or college..."
+      )
+    ),
+    tags$div(
+      class = "player-control-group",
+      tags$label(`for` = "season-select", "Filter by Season"),
+      tags$select(
+        id = "season-select",
+        tags$option(value = "all", "All Players (2021 & 2022)"),
+        tags$option(value = "both", "Played Both Seasons (2021 & 2022)"),
+        tags$option(value = "2021", "2021 Season"),
+        tags$option(value = "2022", "2022 Season")
+      )
+    ),
+    tags$div(
+      class = "player-control-group",
+      tags$label(`for` = "college-select", "Filter by College"),
+      tags$select(id = "college-select")
+    ),
+    tags$div(
+      class = "player-control-group",
+      tags$label(`for` = "player-select", "Select a Player"),
+      tags$select(id = "player-select")
+    )
+  ),
+  tags$div(id = "player-match-count", class = "player-match-count"),
+  tags$div(id = "player-profile-card", class = "player-card"),
+  tags$script(
+    id = "softball-player-data",
+    type = "application/json",
+    HTML(payload_json)
+  ),
+  tags$script(HTML("
+    (function() {
+      const payload = JSON.parse(document.getElementById('softball-player-data').textContent);
+      const logos = payload.logos || {};
+
+      // Group 2021 & 2022 rows into unified player profiles
+      const playerMap = new Map();
+      payload.rows.forEach(row => {
+        const key = row.PlayerKey;
+        if (!playerMap.has(key)) {
+          playerMap.set(key, {
+            key: key,
+            name: row.Player,
+            teams: [],
+            bySeason: {},
+            seasons: []
+          });
+        }
+        const p = playerMap.get(key);
+        p.seasons.push(row);
+        p.bySeason[row.Season] = row;
+        if (!p.teams.includes(row.Team)) {
+          p.teams.push(row.Team);
+        }
+      });
+
+      const players = Array.from(playerMap.values()).map(p => {
+        p.teamLabel = p.teams.length > 1
+          ? p.seasons.map(s => `${s.Team} '${String(s.Season).slice(2)}`).join(' → ')
+          : p.teams[0];
+        p.searchText = (p.name + ' ' + p.teams.join(' ')).toLowerCase();
+        return p;
+      });
+
+      const searchInput = document.getElementById('player-search');
+      const seasonSelect = document.getElementById('season-select');
+      const collegeSelect = document.getElementById('college-select');
+      const playerSelect = document.getElementById('player-select');
+      const matchCount = document.getElementById('player-match-count');
+      const card = document.getElementById('player-profile-card');
+
+      // Populate college dropdown
+      const teams = Object.keys(logos).sort();
+      const allOpt = document.createElement('option');
+      allOpt.value = '';
+      allOpt.textContent = 'All Colleges (' + teams.length + ')';
+      collegeSelect.appendChild(allOpt);
+      teams.forEach(t => {
+        const opt = document.createElement('option');
+        opt.value = t;
+        opt.textContent = t;
+        collegeSelect.appendChild(opt);
+      });
+
+      function getInitials(text) {
+        return text
+          .split(/\\s+/)
+          .filter(Boolean)
+          .slice(0, 2)
+          .map(w => w[0].toUpperCase())
+          .join('');
+      }
+
+      function makeFallbackSvg(label) {
+        const initials = getInitials(label || 'SB');
+        const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'>
+          <circle cx='48' cy='48' r='46' fill='#1e3a8a'/>
+          <text x='50%' y='54%' dominant-baseline='middle' text-anchor='middle' fill='#ffffff' font-family='sans-serif' font-size='30' font-weight='700'>${initials}</text>
+        </svg>`;
+        return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+      }
+
+      function fmtRate(val) {
+        return typeof val === 'number' && !Number.isNaN(val) ? val.toFixed(3) : '—';
+      }
+
+      function escapeHtml(str) {
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/\"/g, '&quot;');
+      }
+
+      function computeCombined(seasons) {
+        const sumCols = ['GP', 'PA', 'AB', 'R', 'H', '2B', '3B', 'HR', 'RBI', 'BB', 'HBP', 'K', 'SB', 'CS'];
+        const tot = { Season: '2021–22 Total', Team: [...new Set(seasons.map(s => s.Team))].join(' / ') };
+        sumCols.forEach(c => {
+          tot[c] = seasons.reduce((acc, s) => acc + (Number(s[c]) || 0), 0);
+        });
+        tot.BA = tot.AB > 0 ? tot.H / tot.AB : 0;
+        const totalBases = tot.H + tot['2B'] + 2 * tot['3B'] + 3 * tot.HR;
+        tot.SLG = tot.AB > 0 ? totalBases / tot.AB : 0;
+        tot.OBP = tot.PA > 0
+          ? seasons.reduce((acc, s) => acc + (Number(s.OBP) || 0) * (Number(s.PA) || 0), 0) / tot.PA
+          : 0;
+        tot.OPS = tot.OBP + tot.SLG;
+        return tot;
+      }
+
+      function renderPlayer(player) {
+        if (!player) {
+          card.innerHTML = '<p style=\"margin:0;color:#6c757d;\">No matching players found. Try clearing your search or filters.</p>';
+          return;
+        }
+
+        const s21 = player.bySeason[2021] || null;
+        const s22 = player.bySeason[2022] || null;
+        const combined = computeCombined(player.seasons);
+        const bothPlayed = Boolean(s21 && s22);
+        const seasonBadgeText = bothPlayed
+          ? 'Seasons: 2021 & 2022'
+          : `Season: ${player.seasons[0].Season} only`;
+
+        const playerInitials = getInitials(player.name);
+        const logosHtml = player.teams.map((t, idx) => {
+          const fallbackSrc = makeFallbackSvg(t);
+          const logoSrc = logos[t] ? logos[t] : fallbackSrc;
+          const badge = idx === player.teams.length - 1
+            ? `<span class='player-initials-badge' title='${escapeHtml(player.name)}'>${escapeHtml(playerInitials)}</span>`
+            : '';
+          return `
+            <div class='player-logo-wrap' title='${escapeHtml(t)}'>
+              <img src='${escapeHtml(logoSrc)}' alt='${escapeHtml(t)} logo' onerror=\"this.onerror=null;this.src='${fallbackSrc}';\" />
+              ${badge}
+            </div>
+          `;
+        }).join('');
+
+        const collegeBadgesHtml = player.seasons.length === 2 && player.teams.length === 2
+          ? `<span class='player-college-badge'>2021: ${escapeHtml(s21.Team)}</span> <span class='player-college-badge'>2022: ${escapeHtml(s22.Team)}</span>`
+          : `<span class='player-college-badge'>${escapeHtml(player.teams[0])}</span>`;
+
+        const tileDefs = [
+          { label: 'BA', isRate: true },
+          { label: 'OBP', isRate: true },
+          { label: 'SLG', isRate: true },
+          { label: 'OPS', isRate: true },
+          { label: 'GP', isRate: false },
+          { label: 'H', isRate: false },
+          { label: 'HR', isRate: false },
+          { label: 'RBI', isRate: false },
+          { label: 'K', isRate: false }
+        ];
+
+        const tilesHtml = tileDefs.map(d => {
+          const mainVal = d.isRate ? fmtRate(combined[d.label]) : combined[d.label];
+          const v21 = s21 ? (d.isRate ? fmtRate(s21[d.label]) : s21[d.label]) : '—';
+          const v22 = s22 ? (d.isRate ? fmtRate(s22[d.label]) : s22[d.label]) : '—';
+          const headerLabel = bothPlayed ? `2021–22 ${d.label}` : d.label;
+          return `
+            <div class='stat-tile'>
+              <div class='stat-tile-label'>${headerLabel}</div>
+              <div class='stat-tile-value'>${mainVal}</div>
+              <div class='stat-tile-sub'>'21: ${v21} &middot; '22: ${v22}</div>
+            </div>
+          `;
+        }).join('');
+
+        const statCols = ['Season', 'Team', 'GP', 'PA', 'AB', 'R', 'H', '2B', '3B', 'HR', 'RBI', 'BB', 'HBP', 'K', 'SB', 'CS', 'BA', 'OBP', 'SLG', 'OPS'];
+        const rateCols = new Set(['BA', 'OBP', 'SLG', 'OPS']);
+        const headersHtml = statCols.map(col => `<th>${col === 'Team' ? 'College' : col}</th>`).join('');
+
+        function formatSeasonRow(yr, rowObj, rowClass = '') {
+          if (!rowObj) {
+            return `<tr class='missing-season-row'><td>${yr}</td><td colspan='${statCols.length - 1}' style='text-align:left;'>No ${yr} NCAA D1 stats in dataset</td></tr>`;
+          }
+          const cells = statCols.map(col => {
+            const val = rateCols.has(col) ? fmtRate(rowObj[col]) : escapeHtml(rowObj[col] ?? '');
+            return `<td>${val}</td>`;
+          }).join('');
+          return `<tr class='${rowClass}'>${cells}</tr>`;
+        }
+
+        const tableRowsHtml = [
+          formatSeasonRow(2021, s21),
+          formatSeasonRow(2022, s22),
+          bothPlayed ? formatSeasonRow('2021–22', combined, 'combined-row') : ''
+        ].join('');
+
+        card.innerHTML = `
+          <div class='player-card-header'>
+            <div class='player-logos-group'>${logosHtml}</div>
+            <div class='player-title'>
+              <h3>${escapeHtml(player.name)}</h3>
+              ${collegeBadgesHtml}
+              <span class='player-seasons-pill'>${escapeHtml(seasonBadgeText)}</span>
+            </div>
+          </div>
+          <div class='player-highlights'>
+            ${tilesHtml}
+          </div>
+          <div class='player-stats-table-wrap'>
+            <` + `table class='player-stats-table'>
+              <thead><tr>${headersHtml}</tr></thead>
+              <tbody>${tableRowsHtml}</tbody>
+            </` + `table>
+          </div>
+        `;
+      }
+
+      let isInitialLoad = true;
+
+      function updateDropdown() {
+        const query = searchInput.value.trim().toLowerCase();
+        const seasonFilter = seasonSelect.value;
+        const college = collegeSelect.value;
+        const previousKey = playerSelect.value;
+
+        const filtered = players.filter(p => {
+          if (seasonFilter === 'both' && !(p.bySeason[2021] && p.bySeason[2022])) return false;
+          if (seasonFilter === '2021' && !p.bySeason[2021]) return false;
+          if (seasonFilter === '2022' && !p.bySeason[2022]) return false;
+          if (college && !p.teams.includes(college)) return false;
+          if (query && !p.searchText.includes(query)) return false;
+          return true;
+        });
+
+        matchCount.textContent = `Showing ${filtered.length.toLocaleString()} of ${players.length.toLocaleString()} players across 2021 & 2022`;
+
+        playerSelect.innerHTML = '';
+        const frag = document.createDocumentFragment();
+        filtered.forEach(p => {
+          const opt = document.createElement('option');
+          opt.value = p.key;
+          const yrTag = (p.bySeason[2021] && p.bySeason[2022]) ? '2021–22' : String(p.seasons[0].Season);
+          opt.textContent = `${p.name} — ${p.teamLabel} (${yrTag})`;
+          frag.appendChild(opt);
+        });
+        playerSelect.appendChild(frag);
+
+        if (filtered.length === 0) {
+          renderPlayer(null);
+          return;
+        }
+
+        let activeKey;
+        if (isInitialLoad) {
+          isInitialLoad = false;
+          const firstBoth = filtered.find(p => p.bySeason[2021] && p.bySeason[2022]);
+          activeKey = firstBoth ? firstBoth.key : filtered[0].key;
+        } else {
+          const keepPrev = filtered.some(p => p.key === previousKey);
+          activeKey = keepPrev ? previousKey : filtered[0].key;
+        }
+
+        playerSelect.value = activeKey;
+        renderPlayer(playerMap.get(activeKey));
+      }
+
+      searchInput.addEventListener('input', updateDropdown);
+      seasonSelect.addEventListener('change', updateDropdown);
+      collegeSelect.addEventListener('change', updateDropdown);
+      playerSelect.addEventListener('change', () => {
+        renderPlayer(playerMap.get(playerSelect.value));
+      });
+
+      updateDropdown();
+    })();
+  "))
+)
+```

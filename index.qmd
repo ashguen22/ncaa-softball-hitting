@@ -1,0 +1,145 @@
+---
+title: "Inside NCAA Division I Softball Hitting (2021–2022)"
+subtitle: "Exploring Contact, Power, Speed, and the Transfer Portal Across 302 College Programs"
+execute:
+  echo: false
+  message: false
+  warning: false
+---
+
+```{r}
+library(tidyverse)
+library(plotly)
+
+batting_2021 <- read_csv("batting2021.csv") |> mutate(Season = 2021L)
+batting_2022 <- read_csv("batting2022.csv") |> mutate(Season = 2022L)
+all_batting <- bind_rows(batting_2021, batting_2022)
+```
+
+Welcome! What makes an elite college softball offense—putting the bat on the ball, swinging for the fences, stealing every base in sight, or landing a star from the transfer portal? Using **4,406 individual player-seasons** across **302 NCAA Division I programs** from the 2021 and 2022 seasons, this site lets you dig into the stories and interactive tools behind modern college softball hitting.
+
+:::: {style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:0.8rem; margin:1.25rem 0 1.5rem 0;"}
+
+::: {.stat-tile}
+::: {.stat-tile-label}
+Player-Seasons
+:::
+::: {.stat-tile-value}
+4,406
+:::
+::: {.stat-tile-sub}
+2021 & 2022 NCAA D1
+:::
+:::
+
+::: {.stat-tile}
+::: {.stat-tile-label}
+D1 Colleges
+:::
+::: {.stat-tile-value}
+302
+:::
+::: {.stat-tile-sub}
+Every D1 conference
+:::
+:::
+
+::: {.stat-tile}
+::: {.stat-tile-label}
+Total Hits
+:::
+::: {.stat-tile-value}
+155,722
+:::
+::: {.stat-tile-sub}
+.279 average BA
+:::
+:::
+
+::: {.stat-tile}
+::: {.stat-tile-label}
+Home Runs
+:::
+::: {.stat-tile-value}
+16,827
+:::
+::: {.stat-tile-sub}
+Led by Oklahoma (303)
+:::
+:::
+
+::: {.stat-tile}
+::: {.stat-tile-label}
+Stolen Bases
+:::
+::: {.stat-tile-value}
+21,328
+:::
+::: {.stat-tile-sub}
+83.5% success rate
+:::
+:::
+
+::::
+
+## College Softball's Best Lineups (2021–2022)
+
+Before diving into individual players, hover over the bars below to see the **15 strongest single-season college lineups** of 2021 and 2022, ranked by plate-appearance-weighted `OPS` (On-Base Plus Slugging, which combines getting on base with hitting for extra bases). Back-to-back national champion **Oklahoma** holds the top two spots by a wide margin.
+
+```{r}
+top_teams <- all_batting |>
+  group_by(Team, Season) |>
+  summarise(
+    team_OPS = weighted.mean(OPS, PA),
+    team_BA = sum(H) / sum(AB),
+    total_HR = sum(HR),
+    total_SB = sum(SB),
+    players = n(),
+    .groups = "drop"
+  ) |>
+  filter(players >= 7) |>
+  slice_max(order_by = team_OPS, n = 15) |>
+  mutate(
+    TeamSeason = paste0(Team, " ('", substr(as.character(Season), 3, 4), ")"),
+    TeamSeason = fct_reorder(TeamSeason, team_OPS)
+  )
+
+p_teams <- top_teams |>
+  ggplot(aes(
+    x = team_OPS,
+    y = TeamSeason,
+    fill = factor(Season),
+    text = paste0(
+      "<b>", Team, " (", Season, ")</b>",
+      "<br>Weighted OPS: ", sprintf("%.3f", team_OPS),
+      "<br>Team Batting Avg: ", sprintf("%.3f", team_BA),
+      "<br>Home Runs: ", total_HR,
+      "<br>Stolen Bases: ", total_SB
+    )
+  )) +
+  geom_col(width = 0.72) +
+  scale_fill_manual(
+    values = c("2021" = "#1d4ed8", "2022" = "#b91c1c"),
+    name = "Season"
+  ) +
+  coord_cartesian(xlim = c(0.85, 1.32)) +
+  labs(
+    title = "Top 15 NCAA D1 Softball Offenses by Weighted OPS (2021–2022)",
+    x = "Lineup Weighted OPS (On-Base + Slugging)",
+    y = NULL
+  ) +
+  theme_minimal()
+
+ggplotly(p_teams, tooltip = "text", height = 470) |>
+  layout(margin = list(t = 60, b = 55, l = 135, r = 25))
+```
+
+## Explore the Site
+
+Pick any tab in the navigation bar—or jump straight in below:
+
+- **[Players](players.qmd) *(Interactive Explorer)*:** Search all 3,200+ players and 302 colleges across 2021 and 2022, complete with school crests, transfer badges, and combined career lines.
+- **[Hitting Graphs](hitting.qmd) *(Interactive Explorer)*:** Test how strikeouts (`K`) affect batting average (`BA`) across both seasons and hover to inspect outliers.
+- **[Power Hitting](story.qmd) *(Data Story)*:** Discover why home-run power normally costs strikeouts—and how Oklahoma's Jocelyn Alo and Tiare Jennings broke that rule completely.
+- **[Transfers & Breakouts](transfers.qmd) *(Story + Explorer)*:** Follow the 72 players who switched Division I colleges between 2021 and 2022, compare them with 1,063 returning teammates, and browse the biggest year-over-year breakouts.
+- **[Speed & Power](speed.qmd) *(Story + Explorer)*:** See why college runners succeed on 83.5% of steal attempts on 60-foot basepaths, and meet the ultra-rare "15 HR / 15 SB" club.

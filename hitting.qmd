@@ -1,0 +1,79 @@
+---
+title: "Strikeouts vs. Batting Average"
+subtitle: "Interactive Hitting Explorations Across 2021 and 2022"
+execute:
+  echo: false
+  message: false
+  warning: false
+---
+
+```{r}
+library(tidyverse)
+library(plotly)
+
+# Read the 2021 and 2022 batting datasets
+batting_2021 <- read_csv("batting2021.csv")
+batting_2022 <- read_csv("batting2022.csv")
+```
+
+This page explores how striking out (`K`) relates to batting average (`BA`—the share of official at-bats that result in a hit) for NCAA Division I college softball players in 2021 and 2022. Hover over any dot on the charts below to see a player's name, college, batting average, and strikeout total.
+
+## 2021 Batting Average vs. Strikeouts
+
+```{r}
+p_2021 <- batting_2021 |>
+  ggplot(aes(
+    x = K,
+    y = BA,
+    color = BA,
+    text = paste0(
+      "Player: ", Player,
+      "<br>Team: ", Team,
+      "<br>Batting Avg: ", BA,
+      "<br>Strikeouts: ", K
+    )
+  )) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(aes(group = 1), method = "lm", se = FALSE, color = "firebrick") +
+  scale_color_viridis_c(option = "plasma", name = "BA") +
+  labs(
+    title = "2021 NCAA D1 Softball: Batting Average vs. Strikeouts",
+    x = "Strikeouts (K)",
+    y = "Batting Average (BA)"
+  ) +
+  theme_minimal()
+
+ggplotly(p_2021, tooltip = "text")
+```
+
+In the 2021 season (2,131 players), the typical player hit **.280** (getting a hit in 28% of their at-bats) and struck out about **19 times**. The downward-sloping red line shows that players who struck out more often generally had slightly lower batting averages, though plenty of everyday hitters still hit well even with 20 to 40 strikeouts.
+
+## 2022 Batting Average vs. Strikeouts
+
+```{r}
+p_2022 <- batting_2022 |>
+  ggplot(aes(
+    x = K,
+    y = BA,
+    color = BA,
+    text = paste0(
+      "Player: ", Player,
+      "<br>Team: ", Team,
+      "<br>Batting Avg: ", BA,
+      "<br>Strikeouts: ", K
+    )
+  )) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(aes(group = 1), method = "lm", se = FALSE, color = "firebrick") +
+  scale_color_viridis_c(option = "viridis", name = "BA") +
+  labs(
+    title = "2022 NCAA D1 Softball: Batting Average vs. Strikeouts",
+    x = "Strikeouts (K)",
+    y = "Batting Average (BA)"
+  ) +
+  theme_minimal()
+
+ggplotly(p_2022, tooltip = "text")
+```
+
+In the 2022 season (2,275 players), the average batting average stayed nearly identical at **.278**, while strikeouts climbed to **23 per player** as teams played fuller schedules after the pandemic. Just like in 2021, striking out more often was linked to a lower batting average, dropping off most noticeably once players passed 40 strikeouts.

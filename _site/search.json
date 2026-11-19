@@ -1,0 +1,142 @@
+[
+  {
+    "objectID": "hitting.html",
+    "href": "hitting.html",
+    "title": "Strikeouts vs. Batting Average",
+    "section": "",
+    "text": "This page explores how striking out (K) relates to batting average (BA—the share of official at-bats that result in a hit) for NCAA Division I college softball players in 2021 and 2022. Hover over any dot on the charts below to see a player’s name, college, batting average, and strikeout total."
+  },
+  {
+    "objectID": "hitting.html#batting-average-vs.-strikeouts",
+    "href": "hitting.html#batting-average-vs.-strikeouts",
+    "title": "Strikeouts vs. Batting Average",
+    "section": "2021 Batting Average vs. Strikeouts",
+    "text": "2021 Batting Average vs. Strikeouts\n\n\n\n\n\n\nIn the 2021 season (2,131 players), the typical player hit .280 (getting a hit in 28% of their at-bats) and struck out about 19 times. The downward-sloping red line shows that players who struck out more often generally had slightly lower batting averages, though plenty of everyday hitters still hit well even with 20 to 40 strikeouts."
+  },
+  {
+    "objectID": "hitting.html#batting-average-vs.-strikeouts-1",
+    "href": "hitting.html#batting-average-vs.-strikeouts-1",
+    "title": "Strikeouts vs. Batting Average",
+    "section": "2022 Batting Average vs. Strikeouts",
+    "text": "2022 Batting Average vs. Strikeouts\n\n\n\n\n\n\nIn the 2022 season (2,275 players), the average batting average stayed nearly identical at .278, while strikeouts climbed to 23 per player as teams played fuller schedules after the pandemic. Just like in 2021, striking out more often was linked to a lower batting average, dropping off most noticeably once players passed 40 strikeouts."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Inside NCAA Division I Softball Hitting (2021–2022)",
+    "section": "",
+    "text": "Welcome! What makes an elite college softball offense—putting the bat on the ball, swinging for the fences, stealing every base in sight, or landing a star from the transfer portal? Using 4,406 individual player-seasons across 302 NCAA Division I programs from the 2021 and 2022 seasons, this site lets you dig into the stories and interactive tools behind modern college softball hitting."
+  },
+  {
+    "objectID": "index.html#college-softballs-best-lineups-20212022",
+    "href": "index.html#college-softballs-best-lineups-20212022",
+    "title": "Inside NCAA Division I Softball Hitting (2021–2022)",
+    "section": "College Softball’s Best Lineups (2021–2022)",
+    "text": "College Softball’s Best Lineups (2021–2022)\nBefore diving into individual players, hover over the bars below to see the 15 strongest single-season college lineups of 2021 and 2022, ranked by plate-appearance-weighted OPS (On-Base Plus Slugging, which combines getting on base with hitting for extra bases). Back-to-back national champion Oklahoma holds the top two spots by a wide margin."
+  },
+  {
+    "objectID": "index.html#explore-the-site",
+    "href": "index.html#explore-the-site",
+    "title": "Inside NCAA Division I Softball Hitting (2021–2022)",
+    "section": "Explore the Site",
+    "text": "Explore the Site\nPick any tab in the navigation bar—or jump straight in below:\n\nPlayers (Interactive Explorer): Search all 3,200+ players and 302 colleges across 2021 and 2022, complete with school crests, transfer badges, and combined career lines.\nHitting Graphs (Interactive Explorer): Test how strikeouts (K) affect batting average (BA) across both seasons and hover to inspect outliers.\nPower Hitting (Data Story): Discover why home-run power normally costs strikeouts—and how Oklahoma’s Jocelyn Alo and Tiare Jennings broke that rule completely.\nTransfers & Breakouts (Story + Explorer): Follow the 72 players who switched Division I colleges between 2021 and 2022, compare them with 1,063 returning teammates, and browse the biggest year-over-year breakouts.\nSpeed & Power (Story + Explorer): See why college runners succeed on 83.5% of steal attempts on 60-foot basepaths, and meet the ultra-rare “15 HR / 15 SB” club."
+  },
+  {
+    "objectID": "players.html",
+    "href": "players.html",
+    "title": "About the Players",
+    "section": "",
+    "text": "Search for any NCAA Division I softball player across both the 2021 and 2022 seasons using the search bar, filter by college or season, or select a player from the dropdown menu to view their college crest and complete 2021, 2022, and combined statistics.\n\n\n\n\nSearch Player or College\n\n\n\nFilter by Season\n\nAll Players (2021 & 2022)\nPlayed Both Seasons (2021 & 2022)\n2021 Season\n2022 Season\n\n\n\nFilter by College\n\n\n\nSelect a Player"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "Hi! My name is Ashlan Guengerich, and I am a student at New College of Florida. I built this project to explore hitting trends, power-versus-contact trade-offs, and player performance across NCAA Division I college softball.\n\nSchool Email: a.guengerich30@ncf.edu\nPersonal Email: ashlan2007@icloud.com\nGitHub Account: ashguen22\nFinal Project Repository: https://github.com/ashguen22/final-project\nCollege: New College of Florida"
+  },
+  {
+    "objectID": "about.html#about-the-author",
+    "href": "about.html#about-the-author",
+    "title": "About",
+    "section": "",
+    "text": "Hi! My name is Ashlan Guengerich, and I am a student at New College of Florida. I built this project to explore hitting trends, power-versus-contact trade-offs, and player performance across NCAA Division I college softball.\n\nSchool Email: a.guengerich30@ncf.edu\nPersonal Email: ashlan2007@icloud.com\nGitHub Account: ashguen22\nFinal Project Repository: https://github.com/ashguen22/final-project\nCollege: New College of Florida"
+  },
+  {
+    "objectID": "about.html#about-the-data",
+    "href": "about.html#about-the-data",
+    "title": "About",
+    "section": "About the Data",
+    "text": "About the Data\nThe data used throughout this website comes from the SCORE Sports Data Repository: NCAA Division I Softball Batting (2021–2022), part of the SCORE Network collection of sports datasets curated from official NCAA Division I Softball Statistics. Together, the 2021 (batting2021.csv, 2,131 players) and 2022 (batting2022.csv, 2,275 players) files cover 4,406 qualifying player-seasons across nearly 300 Division I programs, recording plate appearances, hits, extra-base hits, home runs, walks, strikeouts, stolen bases, and rate statistics (BA, OBP, SLG, and OPS)."
+  },
+  {
+    "objectID": "transfers.html",
+    "href": "transfers.html",
+    "title": "Transfers & Breakout Stars",
+    "section": "",
+    "text": "With the rise of the NCAA transfer portal, it is easy to assume that switching colleges automatically unlocks bigger numbers at the plate. Across the 1,135 players who recorded full Division I seasons in both 2021 and 2022, 72 switched Division I programs while 1,063 stayed at the same college.\nThe data tells a surprising two-part story:"
+  },
+  {
+    "objectID": "transfers.html#interactive-2021-vs.-2022-ops-comparison",
+    "href": "transfers.html#interactive-2021-vs.-2022-ops-comparison",
+    "title": "Transfers & Breakout Stars",
+    "section": "Interactive 2021 vs. 2022 OPS Comparison",
+    "text": "Interactive 2021 vs. 2022 OPS Comparison\nEvery dot above the dashed diagonal line improved her OPS from 2021 to 2022. Hover over any player to see her two-year stats, or click a group in the legend to isolate the 72 transfers!"
+  },
+  {
+    "objectID": "transfers.html#search-transfers-biggest-breakout-hitters",
+    "href": "transfers.html#search-transfers-biggest-breakout-hitters",
+    "title": "Transfers & Breakout Stars",
+    "section": "Search Transfers & Biggest Breakout Hitters",
+    "text": "Search Transfers & Biggest Breakout Hitters\nUse the controls below to browse all 72 D1-to-D1 transfers, see who made the biggest single-season OPS and home-run jumps across the country, or search for your favorite school.\n\n\n\n\nLeaderboard View\n\nAll D1 Transfers (Sorted by 2022 OPS)\nD1 Transfers: Biggest OPS Jump\nAll Players: Top 50 OPS Breakouts\nAll Players: Top 50 Home Run Jumps\n\n\n\nFilter by Player or College\n\n\n\n\n\n\n\n\n\n\nPlayer\n2021 → 2022 College\n'21 BA\n'22 BA\n'21 HR\n'22 HR\nHR +/-\n'21 OPS\n'22 OPS\nOPS +/-"
+  },
+  {
+    "objectID": "story.html",
+    "href": "story.html",
+    "title": "Redefining Power Hitting",
+    "section": "",
+    "text": "On the Hitting Graphs tab, striking out looks like plain bad news: players with more strikeouts generally end up with lower batting averages (meaning they get hits less often). However, batting average counts a soft single and a game-winning home run as the exact same thing. When we look at all 4,406 college softball player seasons from 2021 and 2022 and count home runs instead, we see the opposite pattern: players who hit the most home runs usually strike out more than average, because swinging hard for the fences comes with more swings and misses.\n\n\n\n\n\n\n\n\n\nIn the chart above, each dot is a player’s season, and darker purple dots mark stronger overall hitters (measured by OPS, a single rating that combines how often a batter reaches base and how far they hit the ball). For most big sluggers, power comes with a clear trade-off. To the right of the dashed average line (21 strikeouts), stars like Wichita State’s Addison Barnard (33 home runs, 37 strikeouts) and Miami (OH)’s Karli Spaid (28 home runs, 39 strikeouts) struck out nearly twice as often as a typical player, yet more than made up for those outs by driving the ball over the fence.\nThen there is Oklahoma’s Jocelyn Alo, sitting at the very top left of the chart, who ignored that trade-off completely. In both 2021 and 2022, Alo led the entire country with 34 home runs while striking out just 16 and 19 times—fewer strikeouts than an average college player who hit fewer than four home runs all season. By 2022, opposing pitchers were so afraid to throw strikes to her that she walked 54 times and still got a hit in more than half of her official at-bats, breaking the all-time college career home run record (122 homers). Alongside teammate Tiare Jennings—who also crushed 29 home runs with only 13 strikeouts in 2022—Alo helped make Oklahoma nearly impossible to pitch to, powering the Sooners to back-to-back national championships.\n\n\n\n\n\nPutting Oklahoma’s Run in Perspective (2021–2022)\nOver these two seasons, a typical Division I softball hitter averaged about 4 home runs and 21 strikeouts per year. Oklahoma teammates Jocelyn Alo and Tiare Jennings combined for 124 home runs while striking out only 65 times total across both years—giving the Sooners historic power without giving away easy outs on their way to two straight Women’s College World Series titles."
+  },
+  {
+    "objectID": "speed.html",
+    "href": "speed.html",
+    "title": "Speed & Power on 60-Foot Bases",
+    "section": "",
+    "text": "In NCAA Division I softball, where bases sit just 60 feet apart, base stealers succeed 83.5% of the time (21,328 steals in 25,535 tries across 2021 and 2022). Yet hitting for power and stealing bases usually belong to completely different types of players.\nTo make that L-shaped split easy to see without thousands of low-volume bench rows cluttering the corner, the two charts below focus on college softball’s standout power and speed threats—every player who either hit 10+ home runs or stole 15+ bases:"
+  },
+  {
+    "objectID": "speed.html#two-opposite-paths-to-scoring-runs",
+    "href": "speed.html#two-opposite-paths-to-scoring-runs",
+    "title": "Speed & Power on 60-Foot Bases",
+    "section": "Two Opposite Paths to Scoring Runs",
+    "text": "Two Opposite Paths to Scoring Runs\nHover over the chart below to see how sharply college hitters specialize. Along the bottom right sit elite slap-hitting speedsters like USF’s Alexis Johns (59-for-61 stealing in 2022, 0 HRs) and Central Arkansas’s Jenna Wildeman (56-for-59 in 2021, 0 HRs), who manufacture runs without ever hitting the ball over the fence. Along the top left sit pure power hitters who rarely run."
+  },
+  {
+    "objectID": "speed.html#college-softballs-rarest-group-the-15-hr-15-sb-club",
+    "href": "speed.html#college-softballs-rarest-group-the-15-hr-15-sb-club",
+    "title": "Speed & Power on 60-Foot Bases",
+    "section": "College Softball’s Rarest Group: The 15 HR / 15 SB Club",
+    "text": "College Softball’s Rarest Group: The 15 HR / 15 SB Club\nOut of 4,406 player-seasons, only 7 crossed the dotted lines into the upper-right quadrant with at least 15 home runs and 15 stolen bases in the same season—combining middle-of-the-order power with leadoff speed:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPlayer\nCollege\nSeason\nHR\nSB-CS\nSB%\nBA\nOBP\nOPS\n\n\n\n\nAddison Barnard\nWichita State\n2022\n33\n25-4\n86.2%\n0.391\n0.467\n1.485\n\n\nKarli Spaid\nMiami (OH)\n2021\n17\n19-1\n95%\n0.403\n0.463\n1.352\n\n\nRachel Lewis\nNorthwestern\n2022\n23\n25-3\n89.3%\n0.353\n0.495\n1.328\n\n\nJameson Kavel\nDuke\n2022\n17\n15-1\n93.8%\n0.385\n0.436\n1.218\n\n\nBillie Andrews\nNebraska\n2022\n20\n18-2\n90%\n0.322\n0.436\n1.142\n\n\nKiki Milloy\nTennessee\n2022\n15\n31-2\n93.9%\n0.362\n0.455\n1.128\n\n\nMegan Burton\nEastern Illinois\n2021\n19\n17-3\n85%\n0.320\n0.369\n1.114\n\n\n\n\n\nWichita State’s Addison Barnard stands in a league of her own in 2022, launching 33 home runs (one behind national leader Jocelyn Alo) while also stealing 25 bases in 29 tries for a 1.484 OPS. Meanwhile, if you look strictly at the nation’s most efficient high-volume base stealers (45+ steals), Alexis Johns (96.7%), Gianna Nicoletti of Grand Canyon (51-for-53, 96.2%), and Florida’s Skylar Wallace (52-for-56 with a .542 OBP and 8 HRs) turned nearly every walk or single into an automatic double."
+  },
+  {
+    "objectID": "speed.html#season-speed-vs.-power",
+    "href": "speed.html#season-speed-vs.-power",
+    "title": "Speed & Power on 60-Foot Bases",
+    "section": "2021 Season: Speed vs. Power",
+    "text": "2021 Season: Speed vs. Power\n\n\n\n\n\n\nIn 2021 (331 standout hitters), notice how cleanly the blue and green dots separate along the two axes: Oklahoma’s Jocelyn Alo sits high on the left (34 HRs, 0 SBs), while Central Arkansas’s Jenna Wildeman stretches all the way to the right along zero (0 HRs, 56 SBs). Only 13 players in the country reached the red dual-threat zone, led by Miami (OH)’s Karli Spaid (17 HRs, 19 SBs) and Eastern Illinois’s Megan Burton (19 HRs, 17 SBs)."
+  },
+  {
+    "objectID": "speed.html#season-speed-vs.-power-1",
+    "href": "speed.html#season-speed-vs.-power-1",
+    "title": "Speed & Power on 60-Foot Bases",
+    "section": "2022 Season: Speed vs. Power",
+    "text": "2022 Season: Speed vs. Power\n\n\n\n\n\n\nIn 2022 (433 standout hitters), the dual-threat group grew to 16 players—highlighted by Wichita State’s Addison Barnard, who sits way up in the top middle with 33 home runs and 25 stolen bases, alongside Northwestern’s Rachel Lewis (23 HRs, 25 SBs) and Tennessee’s Kiki Milloy (15 HRs, 31 SBs). Meanwhile, USF speedster Alexis Johns pushed pure base stealing even further on the bottom right with 59 steals in 61 tries and zero home runs."
+  },
+  {
+    "objectID": "speed.html#the-elite-15-hr-15-sb-club-20212022",
+    "href": "speed.html#the-elite-15-hr-15-sb-club-20212022",
+    "title": "Speed & Power on 60-Foot Bases",
+    "section": "The Elite 15 HR / 15 SB Club (2021–2022)",
+    "text": "The Elite 15 HR / 15 SB Club (2021–2022)\nRaise the bar to at least 15 home runs and 15 stolen bases in a single season, and only 7 player-seasons out of 4,406 across both years made the cut:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPlayer\nCollege\nSeason\nHR\nSB-CS\nSB%\nBA\nOBP\nOPS\n\n\n\n\nAddison Barnard\nWichita State\n2022\n33\n25-4\n86.2%\n0.391\n0.467\n1.485\n\n\nKarli Spaid\nMiami (OH)\n2021\n17\n19-1\n95%\n0.403\n0.463\n1.352\n\n\nRachel Lewis\nNorthwestern\n2022\n23\n25-3\n89.3%\n0.353\n0.495\n1.328\n\n\nJameson Kavel\nDuke\n2022\n17\n15-1\n93.8%\n0.385\n0.436\n1.218\n\n\nBillie Andrews\nNebraska\n2022\n20\n18-2\n90%\n0.322\n0.436\n1.142\n\n\nKiki Milloy\nTennessee\n2022\n15\n31-2\n93.9%\n0.362\n0.455\n1.128\n\n\nMegan Burton\nEastern Illinois\n2021\n19\n17-3\n85%\n0.320\n0.369\n1.114"
+  }
+]
