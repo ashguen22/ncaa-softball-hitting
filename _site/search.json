@@ -2,23 +2,30 @@
   {
     "objectID": "hitting.html",
     "href": "hitting.html",
-    "title": "Strikeouts vs. Batting Average",
+    "title": "College Softball’s Best Lineups (2021–2022)",
     "section": "",
-    "text": "This page explores how striking out (K) relates to batting average (BA—the share of official at-bats that result in a hit) for NCAA Division I college softball players in 2021 and 2022. Hover over any dot on the charts below to see a player’s name, college, batting average, and strikeout total."
+    "text": "One superstar can change an inning, but winning a conference or reaching Oklahoma City takes an entire batting order. Across 479 full NCAA Division I team-seasons in 2021 and 2022 (programs with at least 7 qualifying hitters in the dataset), the typical college lineup posted an .802 weighted OPS—combining a .363 On-Base Percentage (OBP) with a .439 Slugging Percentage (SLG).\nYet colleges built dangerous lineups using very different blueprints:"
   },
   {
-    "objectID": "hitting.html#batting-average-vs.-strikeouts",
-    "href": "hitting.html#batting-average-vs.-strikeouts",
-    "title": "Strikeouts vs. Batting Average",
-    "section": "2021 Batting Average vs. Strikeouts",
-    "text": "2021 Batting Average vs. Strikeouts\n\n\n\n\n\n\nIn the 2021 season (2,131 players), the typical player hit .280 (getting a hit in 28% of their at-bats) and struck out about 19 times. The downward-sloping red line shows that players who struck out more often generally had slightly lower batting averages, though plenty of everyday hitters still hit well even with 20 to 40 strikeouts."
+    "objectID": "hitting.html#top-15-single-season-lineups-20212022",
+    "href": "hitting.html#top-15-single-season-lineups-20212022",
+    "title": "College Softball’s Best Lineups (2021–2022)",
+    "section": "Top 15 Single-Season Lineups (2021–2022)",
+    "text": "Top 15 Single-Season Lineups (2021–2022)\nHover over any bar below to inspect the 15 strongest college offenses of 2021 and 2022 ranked by plate-appearance-weighted OPS, including each lineup’s top hitter. Back-to-back national champion Oklahoma holds the top two spots by more than 100 OPS points."
   },
   {
-    "objectID": "hitting.html#batting-average-vs.-strikeouts-1",
-    "href": "hitting.html#batting-average-vs.-strikeouts-1",
-    "title": "Strikeouts vs. Batting Average",
-    "section": "2022 Batting Average vs. Strikeouts",
-    "text": "2022 Batting Average vs. Strikeouts\n\n\n\n\n\n\nIn the 2022 season (2,275 players), the average batting average stayed nearly identical at .278, while strikeouts climbed to 23 per player as teams played fuller schedules after the pandemic. Just like in 2021, striking out more often was linked to a lower batting average, dropping off most noticeably once players passed 40 strikeouts."
+    "objectID": "hitting.html#offensive-blueprints-getting-on-base-vs.-hitting-for-power",
+    "href": "hitting.html#offensive-blueprints-getting-on-base-vs.-hitting-for-power",
+    "title": "College Softball’s Best Lineups (2021–2022)",
+    "section": "Offensive Blueprints: Getting on Base vs. Hitting for Power",
+    "text": "Offensive Blueprints: Getting on Base vs. Hitting for Power\nHow does your favorite college stack up against the rest of Division I? The interactive scatter plot below maps all 479 team-seasons by On-Base Percentage (OBP) on the horizontal axis and Slugging Percentage (SLG) on the vertical axis, with dot size showing team home runs and dashed lines marking the national averages (.363 OBP, .439 SLG). Hover over any dot to inspect a lineup, drag to zoom into crowded clusters, or click 2021 or 2022 in the legend to isolate one season."
+  },
+  {
+    "objectID": "hitting.html#interactive-all-d1-lineup-leaderboard",
+    "href": "hitting.html#interactive-all-d1-lineup-leaderboard",
+    "title": "College Softball’s Best Lineups (2021–2022)",
+    "section": "Interactive All-D1 Lineup Leaderboard",
+    "text": "Interactive All-D1 Lineup Leaderboard\nUse the filters below to explore all 479 Division I team-seasons—switch between 2021 and 2022, re-rank teams by OPS, Home Runs, Stolen Bases, Batting Average, or Runs, or type a school or star player’s name to compare lineups instantly.\n\n\n\n\nSeason\n\nBoth Seasons (2021 & 2022)\n2021 Season Only\n2022 Season Only\n\n\n\nRank Lineups By\n\nWeighted OPS (Overall)\nHome Runs (Power)\nStolen Bases (Speed)\nTeam Batting Average (Contact)\nTotal Runs Scored\n\n\n\nSearch College or Star Hitter\n\n\n\n\n\n\n\n\n\n\n#\nCollege\nSeason\nBA\nOBP\nSLG\nOPS\nRuns\nHR\nSB\nOPS Leader"
   },
   {
     "objectID": "index.html",
@@ -28,18 +35,18 @@
     "text": "Welcome! What makes an elite college softball offense—putting the bat on the ball, swinging for the fences, stealing every base in sight, or landing a star from the transfer portal? Using 4,406 individual player-seasons across 302 NCAA Division I programs from the 2021 and 2022 seasons, this site lets you dig into the stories and interactive tools behind modern college softball hitting."
   },
   {
-    "objectID": "index.html#college-softballs-best-lineups-20212022",
-    "href": "index.html#college-softballs-best-lineups-20212022",
+    "objectID": "index.html#strikeouts-vs.-batting-average-20212022",
+    "href": "index.html#strikeouts-vs.-batting-average-20212022",
     "title": "Inside NCAA Division I Softball Hitting (2021–2022)",
-    "section": "College Softball’s Best Lineups (2021–2022)",
-    "text": "College Softball’s Best Lineups (2021–2022)\nBefore diving into individual players, hover over the bars below to see the 15 strongest single-season college lineups of 2021 and 2022, ranked by plate-appearance-weighted OPS (On-Base Plus Slugging, which combines getting on base with hitting for extra bases). Back-to-back national champion Oklahoma holds the top two spots by a wide margin."
+    "section": "Strikeouts vs. Batting Average (2021–2022)",
+    "text": "Strikeouts vs. Batting Average (2021–2022)\nHow does striking out (K) relate to batting average (BA—the share of official at-bats that result in a hit) for NCAA Division I college softball players in 2021 and 2022? Hover over any dot on the charts below to see a player’s name, college, batting average, and strikeout total.\n\n2021 Batting Average vs. Strikeouts\n\n\n\n\n\n\nIn the 2021 season (2,131 players), the typical player hit .280 (getting a hit in 28% of their at-bats) and struck out about 19 times. The downward-sloping red line shows that players who struck out more often generally had slightly lower batting averages, though plenty of everyday hitters still hit well even with 20 to 40 strikeouts.\n\n\n2022 Batting Average vs. Strikeouts\n\n\n\n\n\n\nIn the 2022 season (2,275 players), the average batting average stayed nearly identical at .278, while strikeouts climbed to 23 per player as teams played fuller schedules after the pandemic. Just like in 2021, striking out more often was linked to a lower batting average, dropping off most noticeably once players passed 40 strikeouts."
   },
   {
     "objectID": "index.html#explore-the-site",
     "href": "index.html#explore-the-site",
     "title": "Inside NCAA Division I Softball Hitting (2021–2022)",
     "section": "Explore the Site",
-    "text": "Explore the Site\nPick any tab in the navigation bar—or jump straight in below:\n\nPlayers (Interactive Explorer): Search all 3,200+ players and 302 colleges across 2021 and 2022, complete with school crests, transfer badges, and combined career lines.\nHitting Graphs (Interactive Explorer): Test how strikeouts (K) affect batting average (BA) across both seasons and hover to inspect outliers.\nPower Hitting (Data Story): Discover why home-run power normally costs strikeouts—and how Oklahoma’s Jocelyn Alo and Tiare Jennings broke that rule completely.\nTransfers & Breakouts (Story + Explorer): Follow the 72 players who switched Division I colleges between 2021 and 2022, compare them with 1,063 returning teammates, and browse the biggest year-over-year breakouts.\nSpeed & Power (Story + Explorer): See why college runners succeed on 83.5% of steal attempts on 60-foot basepaths, and meet the ultra-rare “15 HR / 15 SB” club."
+    "text": "Explore the Site\nPick any tab in the navigation bar—or jump straight in below:\n\nPlayers (Interactive Explorer): Search all 3,200+ players and 302 colleges across 2021 and 2022, complete with school crests, transfer badges, and combined career lines.\nTop Lineups (Story + Explorer): Compare the 15 strongest single-season offenses, explore all 479 Division I lineups on an interactive OBP vs. SLG chart, and search/rank every college by power, speed, or OPS.\nSluggers & Strikeouts (Data Story): Discover why home-run power normally costs strikeouts—and how Oklahoma’s Jocelyn Alo and Tiare Jennings broke that rule completely.\nTransfers & Breakouts (Story + Explorer): Follow the 72 players who switched Division I colleges between 2021 and 2022, compare them with 1,063 returning teammates, and browse the biggest year-over-year breakouts.\nSpeed & Power (Story + Explorer): See why college runners succeed on 83.5% of steal attempts on 60-foot basepaths, and meet the ultra-rare “15 HR / 15 SB” club."
   },
   {
     "objectID": "players.html",
@@ -53,21 +60,21 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "Hi! My name is Ashlan Guengerich, and I am a student at New College of Florida. I built this project to explore hitting trends, power-versus-contact trade-offs, and player performance across NCAA Division I college softball.\n\nSchool Email: a.guengerich30@ncf.edu\nPersonal Email: ashlan2007@icloud.com\nGitHub Account: ashguen22\nFinal Project Repository: https://github.com/ashguen22/final-project\nCollege: New College of Florida"
+    "text": "Hi! My name is Ashlan Guengerich, and I am a student at New College of Florida. I built this project to explore hitting trends, power-versus-contact trade-offs, and player performance across NCAA Division I college softball.\n\nSchool Email: a.guengerich30@ncf.edu\nPersonal Email: ashlan2007@icloud.com\nGitHub Account: ashguen22\nFinal Project Repository: https://github.com/ashguen22/ncaa-softball-hitting\nCollege: New College of Florida"
   },
   {
     "objectID": "about.html#about-the-author",
     "href": "about.html#about-the-author",
     "title": "About",
     "section": "",
-    "text": "Hi! My name is Ashlan Guengerich, and I am a student at New College of Florida. I built this project to explore hitting trends, power-versus-contact trade-offs, and player performance across NCAA Division I college softball.\n\nSchool Email: a.guengerich30@ncf.edu\nPersonal Email: ashlan2007@icloud.com\nGitHub Account: ashguen22\nFinal Project Repository: https://github.com/ashguen22/final-project\nCollege: New College of Florida"
+    "text": "Hi! My name is Ashlan Guengerich, and I am a student at New College of Florida. I built this project to explore hitting trends, power-versus-contact trade-offs, and player performance across NCAA Division I college softball.\n\nSchool Email: a.guengerich30@ncf.edu\nPersonal Email: ashlan2007@icloud.com\nGitHub Account: ashguen22\nFinal Project Repository: https://github.com/ashguen22/ncaa-softball-hitting\nCollege: New College of Florida"
   },
   {
     "objectID": "about.html#about-the-data",
     "href": "about.html#about-the-data",
     "title": "About",
     "section": "About the Data",
-    "text": "About the Data\nThe data used throughout this website comes from the SCORE Sports Data Repository: NCAA Division I Softball Batting (2021–2022), part of the SCORE Network collection of sports datasets curated from official NCAA Division I Softball Statistics. Together, the 2021 (batting2021.csv, 2,131 players) and 2022 (batting2022.csv, 2,275 players) files cover 4,406 qualifying player-seasons across nearly 300 Division I programs, recording plate appearances, hits, extra-base hits, home runs, walks, strikeouts, stolen bases, and rate statistics (BA, OBP, SLG, and OPS)."
+    "text": "About the Data\nThe data used throughout this website comes from the SCORE Sports Data Repository: NCAA Division I Softball Batting (2021–2022), part of the SCORE Network collection of sports datasets curated from official NCAA Division I Softball Statistics. Together, the 2021 (batting2021.csv, 2,131 players) and 2022 (batting2022.csv, 2,275 players) files cover 4,406 qualifying player-seasons across 302 Division I programs, recording plate appearances, hits, extra-base hits, home runs, walks, strikeouts, stolen bases, and rate statistics (BA, OBP, SLG, and OPS)."
   },
   {
     "objectID": "transfers.html",
@@ -93,9 +100,9 @@
   {
     "objectID": "story.html",
     "href": "story.html",
-    "title": "Redefining Power Hitting",
+    "title": "Sluggers & Strikeouts",
     "section": "",
-    "text": "On the Hitting Graphs tab, striking out looks like plain bad news: players with more strikeouts generally end up with lower batting averages (meaning they get hits less often). However, batting average counts a soft single and a game-winning home run as the exact same thing. When we look at all 4,406 college softball player seasons from 2021 and 2022 and count home runs instead, we see the opposite pattern: players who hit the most home runs usually strike out more than average, because swinging hard for the fences comes with more swings and misses.\n\n\n\n\n\n\n\n\n\nIn the chart above, each dot is a player’s season, and darker purple dots mark stronger overall hitters (measured by OPS, a single rating that combines how often a batter reaches base and how far they hit the ball). For most big sluggers, power comes with a clear trade-off. To the right of the dashed average line (21 strikeouts), stars like Wichita State’s Addison Barnard (33 home runs, 37 strikeouts) and Miami (OH)’s Karli Spaid (28 home runs, 39 strikeouts) struck out nearly twice as often as a typical player, yet more than made up for those outs by driving the ball over the fence.\nThen there is Oklahoma’s Jocelyn Alo, sitting at the very top left of the chart, who ignored that trade-off completely. In both 2021 and 2022, Alo led the entire country with 34 home runs while striking out just 16 and 19 times—fewer strikeouts than an average college player who hit fewer than four home runs all season. By 2022, opposing pitchers were so afraid to throw strikes to her that she walked 54 times and still got a hit in more than half of her official at-bats, breaking the all-time college career home run record (122 homers). Alongside teammate Tiare Jennings—who also crushed 29 home runs with only 13 strikeouts in 2022—Alo helped make Oklahoma nearly impossible to pitch to, powering the Sooners to back-to-back national championships.\n\n\n\n\n\nPutting Oklahoma’s Run in Perspective (2021–2022)\nOver these two seasons, a typical Division I softball hitter averaged about 4 home runs and 21 strikeouts per year. Oklahoma teammates Jocelyn Alo and Tiare Jennings combined for 124 home runs while striking out only 65 times total across both years—giving the Sooners historic power without giving away easy outs on their way to two straight Women’s College World Series titles."
+    "text": "On the Home page, striking out looks like plain bad news: players with more strikeouts generally end up with lower batting averages (meaning they get hits less often). However, batting average counts a soft single and a game-winning home run as the exact same thing. When we look at all 4,406 college softball player seasons from 2021 and 2022 and count home runs instead, we see the opposite pattern: players who hit the most home runs usually strike out more than average, because swinging hard for the fences comes with more swings and misses.\n\n\n\n\n\n\n\n\n\nIn the chart above, each dot is a player’s season, and darker purple dots mark stronger overall hitters (measured by OPS, a single rating that combines how often a batter reaches base and how far they hit the ball). For most big sluggers, power comes with a clear trade-off. To the right of the dashed average line (21 strikeouts), stars like Wichita State’s Addison Barnard (33 home runs, 37 strikeouts) and Miami (OH)’s Karli Spaid (28 home runs, 39 strikeouts) struck out nearly twice as often as a typical player, yet more than made up for those outs by driving the ball over the fence.\nThen there is Oklahoma’s Jocelyn Alo, sitting at the very top left of the chart, who ignored that trade-off completely. In both 2021 and 2022, Alo led the entire country with 34 home runs while striking out just 16 and 19 times—fewer strikeouts than an average college player who hit fewer than four home runs all season. By 2022, opposing pitchers were so afraid to throw strikes to her that she walked 54 times and still got a hit in more than half of her official at-bats, breaking the all-time college career home run record (122 homers). Alongside teammate Tiare Jennings—who also crushed 29 home runs with only 13 strikeouts in 2022—Alo helped make Oklahoma nearly impossible to pitch to, powering the Sooners to back-to-back national championships.\n\n\n\n\n\nPutting Oklahoma’s Run in Perspective (2021–2022)\nOver these two seasons, a typical Division I softball hitter averaged about 4 home runs and 21 strikeouts per year. Oklahoma teammates Jocelyn Alo and Tiare Jennings combined for 124 home runs while striking out only 65 times total across both years—giving the Sooners historic power without giving away easy outs on their way to two straight Women’s College World Series titles."
   },
   {
     "objectID": "speed.html",

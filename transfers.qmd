@@ -77,14 +77,17 @@ p_transfers <- both_years |>
   ) +
   theme_minimal()
 
-ggplotly(p_transfers, tooltip = "text", height = 460) |>
+ggplotly(p_transfers, tooltip = "text", height = 490) |>
   layout(
-    margin = list(t = 60, b = 90, l = 60, r = 25),
+    title = list(font = list(size = 15.5), x = 0, xref = "paper"),
+    margin = list(t = 60, b = 110, l = 70, r = 25),
+    xaxis = list(automargin = TRUE, title = list(standoff = 14)),
+    yaxis = list(automargin = TRUE, title = list(standoff = 12)),
     legend = list(
       orientation = "h",
       x = 0.5,
       xanchor = "center",
-      y = -0.22
+      y = -0.26
     )
   )
 ```

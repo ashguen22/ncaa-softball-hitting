@@ -1,6 +1,6 @@
 ---
-title: "Strikeouts vs. Batting Average"
-subtitle: "Interactive Hitting Explorations Across 2021 and 2022"
+title: "College Softball's Best Lineups (2021–2022)"
+subtitle: "Exploring Powerhouses, Speed Offenses, and All 479 Division I Team-Seasons"
 execute:
   echo: false
   message: false
@@ -10,70 +10,339 @@ execute:
 ```{r}
 library(tidyverse)
 library(plotly)
+library(jsonlite)
+library(htmltools)
 
-# Read the 2021 and 2022 batting datasets
-batting_2021 <- read_csv("batting2021.csv")
-batting_2022 <- read_csv("batting2022.csv")
+batting_2021 <- read_csv("batting2021.csv") |> mutate(Season = 2021L)
+batting_2022 <- read_csv("batting2022.csv") |> mutate(Season = 2022L)
+all_batting <- bind_rows(batting_2021, batting_2022)
+
+team_seasons <- all_batting |>
+  group_by(Team, Season) |>
+  summarise(
+    players = n(),
+    star_idx = which.max(if_else(PA >= 50, OPS, -1)),
+    star = Player[star_idx],
+    star_ops = OPS[star_idx],
+    star_hr = HR[star_idx],
+    team_OBP = weighted.mean(OBP, PA),
+    team_SLG = weighted.mean(SLG, PA),
+    team_OPS = weighted.mean(OPS, PA),
+    team_BA = sum(H) / sum(AB),
+    total_R = sum(R),
+    total_H = sum(H),
+    total_HR = sum(HR),
+    total_SB = sum(SB),
+    total_CS = sum(CS),
+    .groups = "drop"
+  ) |>
+  filter(players >= 7)
 ```
 
-This page explores how striking out (`K`) relates to batting average (`BA`—the share of official at-bats that result in a hit) for NCAA Division I college softball players in 2021 and 2022. Hover over any dot on the charts below to see a player's name, college, batting average, and strikeout total.
+One superstar can change an inning, but winning a conference or reaching Oklahoma City takes an entire batting order. Across **479 full NCAA Division I team-seasons** in 2021 and 2022 (programs with at least 7 qualifying hitters in the dataset), the typical college lineup posted an **.802 weighted OPS**—combining a **.363 On-Base Percentage (`OBP`)** with a **.439 Slugging Percentage (`SLG`)**.
 
-## 2021 Batting Average vs. Strikeouts
+:::: {style="display:grid; grid-template-columns:repeat(auto-fit, minmax(155px, 1fr)); gap:0.8rem; margin:1.25rem 0 1.5rem 0;"}
+
+::: {.stat-tile}
+::: {.stat-tile-label}
+Team-Seasons
+:::
+::: {.stat-tile-value}
+479
+:::
+::: {.stat-tile-sub}
+.802 D1 average OPS
+:::
+:::
+
+::: {.stat-tile}
+::: {.stat-tile-label}
+Highest Team OPS
+:::
+::: {.stat-tile-value}
+1.280
+:::
+::: {.stat-tile-sub}
+Oklahoma (2021)
+:::
+:::
+
+::: {.stat-tile}
+::: {.stat-tile-label}
+Single-Season HRs
+:::
+::: {.stat-tile-value}
+154
+:::
+::: {.stat-tile-sub}
+Oklahoma (2021)
+:::
+:::
+
+::: {.stat-tile}
+::: {.stat-tile-label}
+Single-Season SBs
+:::
+::: {.stat-tile-value}
+142
+:::
+::: {.stat-tile-sub}
+SE Louisiana (2021)
+:::
+:::
+
+::::
+
+Yet colleges built dangerous lineups using very different blueprints:
+
+- **100-Homer Juggernauts:** Only four lineups cracked 100 home runs in a single season—**2021 Oklahoma (154)**, **2022 Oklahoma (149)**, **2022 Wichita State (111)**, and **2022 Arkansas (103)**.
+- **Balanced Five-Tool Offenses:** Programs like **2022 Duke** (82 HRs, 74 SBs), **2022 UL Lafayette** (69 HRs, 80 SBs), and **2021 Miami (OH)** (74 HRs, 71 SBs) reached the national Top 15 by pairing over-the-fence power with relentless base stealing.
+- **Track-Meet Pressure:** **Southeastern Louisiana** stole **142 bases in 2021** and **133 in 2022**—climbing to a **.912 team OPS** in 2022 despite hitting only 31 home runs—alongside speed-first contenders like **2022 Florida** (126 SBs) and **2022 McNeese** (128 SBs).
+
+## Top 15 Single-Season Lineups (2021–2022)
+
+Hover over any bar below to inspect the **15 strongest college offenses** of 2021 and 2022 ranked by plate-appearance-weighted `OPS`, including each lineup's top hitter. Back-to-back national champion **Oklahoma** holds the top two spots by more than 100 OPS points.
 
 ```{r}
-p_2021 <- batting_2021 |>
+top_teams <- team_seasons |>
+  slice_max(order_by = team_OPS, n = 15) |>
+  mutate(
+    SeasonLabel = paste0(Season, " Season"),
+    TeamSeason = paste0(Team, " ('", substr(as.character(Season), 3, 4), ")"),
+    TeamSeason = fct_reorder(TeamSeason, team_OPS)
+  )
+
+p_teams <- top_teams |>
   ggplot(aes(
-    x = K,
-    y = BA,
-    color = BA,
+    x = team_OPS,
+    y = TeamSeason,
+    fill = SeasonLabel,
     text = paste0(
-      "Player: ", Player,
-      "<br>Team: ", Team,
-      "<br>Batting Avg: ", BA,
-      "<br>Strikeouts: ", K
+      "<b>", Team, " (", Season, ")</b>",
+      "<br>Weighted OPS: ", sprintf("%.3f", team_OPS),
+      " (", sprintf("%.3f", team_OBP), " OBP / ", sprintf("%.3f", team_SLG), " SLG)",
+      "<br>Team Batting Avg: ", sprintf("%.3f", team_BA),
+      "<br>Runs: ", total_R, " | Home Runs: ", total_HR, " | Steals: ", total_SB,
+      "<br>OPS Leader: ", star, " (", sprintf("%.3f", star_ops), " OPS, ", star_hr, " HR)"
     )
   )) +
-  geom_point(alpha = 0.6) +
-  geom_smooth(aes(group = 1), method = "lm", se = FALSE, color = "firebrick") +
-  scale_color_viridis_c(option = "plasma", name = "BA") +
+  geom_col(width = 0.7) +
+  scale_fill_manual(
+    values = c("2021 Season" = "#1d4ed8", "2022 Season" = "#b91c1c"),
+    name = NULL
+  ) +
+  coord_cartesian(xlim = c(0.85, 1.32)) +
   labs(
-    title = "2021 NCAA D1 Softball: Batting Average vs. Strikeouts",
-    x = "Strikeouts (K)",
-    y = "Batting Average (BA)"
+    title = "Top 15 NCAA D1 Softball Offenses by Weighted OPS",
+    x = "Lineup Weighted OPS (On-Base + Slugging)",
+    y = NULL
   ) +
   theme_minimal()
 
-ggplotly(p_2021, tooltip = "text")
+ggplotly(p_teams, tooltip = "text", height = 540) |>
+  layout(
+    title = list(font = list(size = 15), x = 0, xref = "paper"),
+    margin = list(t = 60, b = 110, l = 180, r = 30),
+    xaxis = list(automargin = TRUE, title = list(standoff = 14)),
+    yaxis = list(automargin = TRUE),
+    legend = list(
+      orientation = "h",
+      x = 0.5,
+      xanchor = "center",
+      y = -0.22
+    )
+  )
 ```
 
-In the 2021 season (2,131 players), the typical player hit **.280** (getting a hit in 28% of their at-bats) and struck out about **19 times**. The downward-sloping red line shows that players who struck out more often generally had slightly lower batting averages, though plenty of everyday hitters still hit well even with 20 to 40 strikeouts.
+## Offensive Blueprints: Getting on Base vs. Hitting for Power
 
-## 2022 Batting Average vs. Strikeouts
+How does your favorite college stack up against the rest of Division I? The interactive scatter plot below maps **all 479 team-seasons** by **On-Base Percentage (`OBP`)** on the horizontal axis and **Slugging Percentage (`SLG`)** on the vertical axis, with **dot size showing team home runs** and dashed lines marking the national averages (`.363 OBP`, `.439 SLG`). Hover over any dot to inspect a lineup, drag to zoom into crowded clusters, or click **2021** or **2022** in the legend to isolate one season.
 
 ```{r}
-p_2022 <- batting_2022 |>
+p_blueprint <- team_seasons |>
+  mutate(SeasonLabel = paste0(Season, " Season")) |>
   ggplot(aes(
-    x = K,
-    y = BA,
-    color = BA,
+    x = team_OBP,
+    y = team_SLG,
+    color = SeasonLabel,
+    size = total_HR,
     text = paste0(
-      "Player: ", Player,
-      "<br>Team: ", Team,
-      "<br>Batting Avg: ", BA,
-      "<br>Strikeouts: ", K
+      "<b>", Team, " (", Season, ")</b>",
+      "<br>Weighted OPS: ", sprintf("%.3f", team_OPS),
+      "<br>OBP: ", sprintf("%.3f", team_OBP), " | SLG: ", sprintf("%.3f", team_SLG),
+      " | BA: ", sprintf("%.3f", team_BA),
+      "<br>Home Runs: ", total_HR, " | Stolen Bases: ", total_SB, " | Runs: ", total_R,
+      "<br>Top Hitter: ", star, " (", sprintf("%.3f", star_ops), " OPS)"
     )
   )) +
-  geom_point(alpha = 0.6) +
-  geom_smooth(aes(group = 1), method = "lm", se = FALSE, color = "firebrick") +
-  scale_color_viridis_c(option = "viridis", name = "BA") +
+  geom_vline(xintercept = mean(team_seasons$team_OBP), linetype = "dashed", color = "gray55") +
+  geom_hline(yintercept = mean(team_seasons$team_SLG), linetype = "dashed", color = "gray55") +
+  geom_point(alpha = 0.72) +
+  scale_color_manual(
+    values = c("2021 Season" = "#1d4ed8", "2022 Season" = "#b91c1c"),
+    name = NULL
+  ) +
+  scale_size_continuous(range = c(1.6, 7.5), guide = "none") +
   labs(
-    title = "2022 NCAA D1 Softball: Batting Average vs. Strikeouts",
-    x = "Strikeouts (K)",
-    y = "Batting Average (BA)"
+    title = "All 479 D1 Lineups: Team OBP vs. SLG (Dot Size = HRs)",
+    x = "Team On-Base Percentage (Weighted OBP)",
+    y = "Team Slugging Percentage (Weighted SLG)"
   ) +
   theme_minimal()
 
-ggplotly(p_2022, tooltip = "text")
+ggplotly(p_blueprint, tooltip = "text", height = 510) |>
+  layout(
+    title = list(font = list(size = 15), x = 0, xref = "paper"),
+    margin = list(t = 60, b = 115, l = 80, r = 30),
+    xaxis = list(automargin = TRUE, title = list(standoff = 14)),
+    yaxis = list(automargin = TRUE, title = list(standoff = 12)),
+    legend = list(
+      orientation = "h",
+      x = 0.5,
+      xanchor = "center",
+      y = -0.26
+    )
+  )
 ```
 
-In the 2022 season (2,275 players), the average batting average stayed nearly identical at **.278**, while strikeouts climbed to **23 per player** as teams played fuller schedules after the pandemic. Just like in 2021, striking out more often was linked to a lower batting average, dropping off most noticeably once players passed 40 strikeouts.
+## Interactive All-D1 Lineup Leaderboard
+
+Use the filters below to explore all **479 Division I team-seasons**—switch between **2021** and **2022**, re-rank teams by **OPS**, **Home Runs**, **Stolen Bases**, **Batting Average**, or **Runs**, or type a school or star player's name to compare lineups instantly.
+
+```{r}
+leaderboard_rows <- team_seasons |>
+  transmute(
+    Team,
+    Season,
+    BA = round(team_BA, 3),
+    OBP = round(team_OBP, 3),
+    SLG = round(team_SLG, 3),
+    OPS = round(team_OPS, 3),
+    R = total_R,
+    HR = total_HR,
+    SB = total_SB,
+    Star = star,
+    StarOPS = round(star_ops, 3)
+  ) |>
+  arrange(desc(OPS))
+
+lineup_json <- toJSON(leaderboard_rows, dataframe = "rows", auto_unbox = TRUE)
+
+tagList(
+  tags$div(
+    class = "player-explorer-controls",
+    tags$div(
+      class = "player-control-group",
+      tags$label(`for` = "lu-season", "Season"),
+      tags$select(
+        id = "lu-season",
+        tags$option(value = "all", "Both Seasons (2021 & 2022)"),
+        tags$option(value = "2021", "2021 Season Only"),
+        tags$option(value = "2022", "2022 Season Only")
+      )
+    ),
+    tags$div(
+      class = "player-control-group",
+      tags$label(`for` = "lu-sort", "Rank Lineups By"),
+      tags$select(
+        id = "lu-sort",
+        tags$option(value = "OPS", "Weighted OPS (Overall)"),
+        tags$option(value = "HR", "Home Runs (Power)"),
+        tags$option(value = "SB", "Stolen Bases (Speed)"),
+        tags$option(value = "BA", "Team Batting Average (Contact)"),
+        tags$option(value = "R", "Total Runs Scored")
+      )
+    ),
+    tags$div(
+      class = "player-control-group",
+      tags$label(`for` = "lu-search", "Search College or Star Hitter"),
+      tags$input(
+        id = "lu-search",
+        type = "search",
+        placeholder = "e.g. Oklahoma, Duke, Florida, Jocelyn Alo..."
+      )
+    )
+  ),
+  tags$div(id = "lu-count", class = "player-match-count"),
+  tags$div(
+    class = "player-card",
+    tags$div(
+      class = "player-stats-table-wrap",
+      tags$table(
+        class = "player-stats-table",
+        tags$thead(
+          tags$tr(
+            tags$th("#"),
+            tags$th("College"),
+            tags$th("Season"),
+            tags$th("BA"),
+            tags$th("OBP"),
+            tags$th("SLG"),
+            tags$th("OPS"),
+            tags$th("Runs"),
+            tags$th("HR"),
+            tags$th("SB"),
+            tags$th("OPS Leader")
+          )
+        ),
+        tags$tbody(id = "lu-tbody")
+      )
+    )
+  ),
+  tags$script(id = "lu-data", type = "application/json", HTML(lineup_json)),
+  tags$script(HTML("
+    (function() {
+      const rows = JSON.parse(document.getElementById('lu-data').textContent);
+      const seasonSel = document.getElementById('lu-season');
+      const sortSel = document.getElementById('lu-sort');
+      const searchIn = document.getElementById('lu-search');
+      const countEl = document.getElementById('lu-count');
+      const tbody = document.getElementById('lu-tbody');
+
+      function fmt3(x) { return Number(x).toFixed(3); }
+
+      function render() {
+        const yr = seasonSel.value;
+        const metric = sortSel.value;
+        const q = searchIn.value.trim().toLowerCase();
+
+        let list = rows.filter(r => {
+          if (yr !== 'all' && String(r.Season) !== yr) return false;
+          if (!q) return true;
+          return (r.Team + ' ' + r.Star + ' ' + r.Season).toLowerCase().includes(q);
+        });
+
+        list.sort((a, b) => (b[metric] - a[metric]) || (b.OPS - a.OPS));
+
+        const totalMatched = list.length;
+        const shown = q ? list : list.slice(0, 50);
+
+        countEl.textContent = q
+          ? `Showing ${shown.length} matching lineup${shown.length === 1 ? '' : 's'}`
+          : `Showing top ${shown.length} of ${totalMatched} D1 team-seasons (type a school above to see any team)`;
+
+        tbody.innerHTML = shown.map((r, idx) => {
+          return `<tr>
+            <td>${idx + 1}</td>
+            <td style='text-align:left;'><strong>${r.Team}</strong></td>
+            <td>${r.Season}</td>
+            <td>${fmt3(r.BA)}</td>
+            <td>${fmt3(r.OBP)}</td>
+            <td>${fmt3(r.SLG)}</td>
+            <td><strong>${fmt3(r.OPS)}</strong></td>
+            <td>${r.R}</td>
+            <td>${r.HR}</td>
+            <td>${r.SB}</td>
+            <td style='text-align:left;'>${r.Star} (${fmt3(r.StarOPS)})</td>
+          </tr>`;
+        }).join('');
+      }
+
+      seasonSel.addEventListener('change', render);
+      sortSel.addEventListener('change', render);
+      searchIn.addEventListener('input', render);
+      render();
+    })();
+  "))
+)
+```

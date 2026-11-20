@@ -11,9 +11,8 @@ execute:
 library(tidyverse)
 library(plotly)
 
-batting_2021 <- read_csv("batting2021.csv") |> mutate(Season = 2021L)
-batting_2022 <- read_csv("batting2022.csv") |> mutate(Season = 2022L)
-all_batting <- bind_rows(batting_2021, batting_2022)
+batting_2021 <- read_csv("batting2021.csv")
+batting_2022 <- read_csv("batting2022.csv")
 ```
 
 Welcome! What makes an elite college softball offense—putting the bat on the ball, swinging for the fences, stealing every base in sight, or landing a star from the transfer portal? Using **4,406 individual player-seasons** across **302 NCAA Division I programs** from the 2021 and 2022 seasons, this site lets you dig into the stories and interactive tools behind modern college softball hitting.
@@ -82,64 +81,88 @@ Stolen Bases
 
 ::::
 
-## College Softball's Best Lineups (2021–2022)
+## Strikeouts vs. Batting Average (2021–2022)
 
-Before diving into individual players, hover over the bars below to see the **15 strongest single-season college lineups** of 2021 and 2022, ranked by plate-appearance-weighted `OPS` (On-Base Plus Slugging, which combines getting on base with hitting for extra bases). Back-to-back national champion **Oklahoma** holds the top two spots by a wide margin.
+How does striking out (`K`) relate to batting average (`BA`—the share of official at-bats that result in a hit) for NCAA Division I college softball players in 2021 and 2022? Hover over any dot on the charts below to see a player's name, college, batting average, and strikeout total.
+
+### 2021 Batting Average vs. Strikeouts
 
 ```{r}
-top_teams <- all_batting |>
-  group_by(Team, Season) |>
-  summarise(
-    team_OPS = weighted.mean(OPS, PA),
-    team_BA = sum(H) / sum(AB),
-    total_HR = sum(HR),
-    total_SB = sum(SB),
-    players = n(),
-    .groups = "drop"
-  ) |>
-  filter(players >= 7) |>
-  slice_max(order_by = team_OPS, n = 15) |>
-  mutate(
-    TeamSeason = paste0(Team, " ('", substr(as.character(Season), 3, 4), ")"),
-    TeamSeason = fct_reorder(TeamSeason, team_OPS)
-  )
-
-p_teams <- top_teams |>
+p_2021 <- batting_2021 |>
   ggplot(aes(
-    x = team_OPS,
-    y = TeamSeason,
-    fill = factor(Season),
+    x = K,
+    y = BA,
+    color = BA,
     text = paste0(
-      "<b>", Team, " (", Season, ")</b>",
-      "<br>Weighted OPS: ", sprintf("%.3f", team_OPS),
-      "<br>Team Batting Avg: ", sprintf("%.3f", team_BA),
-      "<br>Home Runs: ", total_HR,
-      "<br>Stolen Bases: ", total_SB
+      "<b>", Player, " (", Team, ")</b>",
+      "<br>Batting Avg: ", sprintf("%.3f", BA),
+      "<br>Strikeouts: ", K,
+      "<br>Home Runs: ", HR, " | OPS: ", sprintf("%.3f", OPS)
     )
   )) +
-  geom_col(width = 0.72) +
-  scale_fill_manual(
-    values = c("2021" = "#1d4ed8", "2022" = "#b91c1c"),
-    name = "Season"
-  ) +
-  coord_cartesian(xlim = c(0.85, 1.32)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(aes(group = 1), method = "lm", se = FALSE, color = "firebrick") +
+  scale_color_viridis_c(option = "plasma", name = "BA") +
   labs(
-    title = "Top 15 NCAA D1 Softball Offenses by Weighted OPS (2021–2022)",
-    x = "Lineup Weighted OPS (On-Base + Slugging)",
-    y = NULL
+    title = "2021 NCAA D1 Softball: Batting Average vs. Strikeouts",
+    x = "Strikeouts (K)",
+    y = "Batting Average (BA)"
   ) +
   theme_minimal()
 
-ggplotly(p_teams, tooltip = "text", height = 470) |>
-  layout(margin = list(t = 60, b = 55, l = 135, r = 25))
+ggplotly(p_2021, tooltip = "text", height = 460) |>
+  layout(
+    title = list(font = list(size = 15.5), x = 0, xref = "paper"),
+    margin = list(t = 60, b = 65, l = 70, r = 25),
+    xaxis = list(automargin = TRUE, title = list(standoff = 12)),
+    yaxis = list(automargin = TRUE, title = list(standoff = 12))
+  )
 ```
+
+In the 2021 season (2,131 players), the typical player hit **.280** (getting a hit in 28% of their at-bats) and struck out about **19 times**. The downward-sloping red line shows that players who struck out more often generally had slightly lower batting averages, though plenty of everyday hitters still hit well even with 20 to 40 strikeouts.
+
+### 2022 Batting Average vs. Strikeouts
+
+```{r}
+p_2022 <- batting_2022 |>
+  ggplot(aes(
+    x = K,
+    y = BA,
+    color = BA,
+    text = paste0(
+      "<b>", Player, " (", Team, ")</b>",
+      "<br>Batting Avg: ", sprintf("%.3f", BA),
+      "<br>Strikeouts: ", K,
+      "<br>Home Runs: ", HR, " | OPS: ", sprintf("%.3f", OPS)
+    )
+  )) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(aes(group = 1), method = "lm", se = FALSE, color = "firebrick") +
+  scale_color_viridis_c(option = "viridis", name = "BA") +
+  labs(
+    title = "2022 NCAA D1 Softball: Batting Average vs. Strikeouts",
+    x = "Strikeouts (K)",
+    y = "Batting Average (BA)"
+  ) +
+  theme_minimal()
+
+ggplotly(p_2022, tooltip = "text", height = 460) |>
+  layout(
+    title = list(font = list(size = 15.5), x = 0, xref = "paper"),
+    margin = list(t = 60, b = 65, l = 70, r = 25),
+    xaxis = list(automargin = TRUE, title = list(standoff = 12)),
+    yaxis = list(automargin = TRUE, title = list(standoff = 12))
+  )
+```
+
+In the 2022 season (2,275 players), the average batting average stayed nearly identical at **.278**, while strikeouts climbed to **23 per player** as teams played fuller schedules after the pandemic. Just like in 2021, striking out more often was linked to a lower batting average, dropping off most noticeably once players passed 40 strikeouts.
 
 ## Explore the Site
 
 Pick any tab in the navigation bar—or jump straight in below:
 
 - **[Players](players.qmd) *(Interactive Explorer)*:** Search all 3,200+ players and 302 colleges across 2021 and 2022, complete with school crests, transfer badges, and combined career lines.
-- **[Hitting Graphs](hitting.qmd) *(Interactive Explorer)*:** Test how strikeouts (`K`) affect batting average (`BA`) across both seasons and hover to inspect outliers.
-- **[Power Hitting](story.qmd) *(Data Story)*:** Discover why home-run power normally costs strikeouts—and how Oklahoma's Jocelyn Alo and Tiare Jennings broke that rule completely.
+- **[Top Lineups](hitting.qmd) *(Story + Explorer)*:** Compare the 15 strongest single-season offenses, explore all 479 Division I lineups on an interactive `OBP` vs. `SLG` chart, and search/rank every college by power, speed, or `OPS`.
+- **[Sluggers & Strikeouts](story.qmd) *(Data Story)*:** Discover why home-run power normally costs strikeouts—and how Oklahoma's Jocelyn Alo and Tiare Jennings broke that rule completely.
 - **[Transfers & Breakouts](transfers.qmd) *(Story + Explorer)*:** Follow the 72 players who switched Division I colleges between 2021 and 2022, compare them with 1,063 returning teammates, and browse the biggest year-over-year breakouts.
 - **[Speed & Power](speed.qmd) *(Story + Explorer)*:** See why college runners succeed on 83.5% of steal attempts on 60-foot basepaths, and meet the ultra-rare "15 HR / 15 SB" club.

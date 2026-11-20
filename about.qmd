@@ -10,11 +10,11 @@ Hi! My name is **Ashlan Guengerich**, and I am a student at [New College of Flor
 - **School Email:** [a.guengerich30@ncf.edu](mailto:a.guengerich30@ncf.edu)
 - **Personal Email:** [ashlan2007@icloud.com](mailto:ashlan2007@icloud.com)
 - **GitHub Account:** [ashguen22](https://github.com/ashguen22)
-- **Final Project Repository:** [https://github.com/ashguen22/final-project](https://github.com/ashguen22/final-project)
+- **Final Project Repository:** [https://github.com/ashguen22/ncaa-softball-hitting](https://github.com/ashguen22/ncaa-softball-hitting)
 - **College:** [New College of Florida](https://www.ncf.edu/)
 
 ---
 
 ## About the Data
 
-The data used throughout this website comes from the [SCORE Sports Data Repository: NCAA Division I Softball Batting (2021–2022)](https://data.scorenetwork.org/softball/softball_d1_2021-2022.html), part of the [SCORE Network](https://scorenetwork.org/) collection of sports datasets curated from official [NCAA Division I Softball Statistics](https://stats.ncaa.org/). Together, the 2021 (`batting2021.csv`, 2,131 players) and 2022 (`batting2022.csv`, 2,275 players) files cover 4,406 qualifying player-seasons across nearly 300 Division I programs, recording plate appearances, hits, extra-base hits, home runs, walks, strikeouts, stolen bases, and rate statistics (`BA`, `OBP`, `SLG`, and `OPS`).
+The data used throughout this website comes from the [SCORE Sports Data Repository: NCAA Division I Softball Batting (2021–2022)](https://data.scorenetwork.org/softball/softball_d1_2021-2022.html), part of the [SCORE Network](https://scorenetwork.org/) collection of sports datasets curated from official [NCAA Division I Softball Statistics](https://stats.ncaa.org/). Together, the 2021 (`batting2021.csv`, 2,131 players) and 2022 (`batting2022.csv`, 2,275 players) files cover 4,406 qualifying player-seasons across 302 Division I programs, recording plate appearances, hits, extra-base hits, home runs, walks, strikeouts, stolen bases, and rate statistics (`BA`, `OBP`, `SLG`, and `OPS`).

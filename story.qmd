@@ -1,5 +1,5 @@
 ---
-title: "Redefining Power Hitting"
+title: "Sluggers & Strikeouts"
 subtitle: "How Jocelyn Alo and Oklahoma Broke Softball's Biggest Trade-Off (2021–2022)"
 execute:
   echo: false
@@ -15,7 +15,7 @@ batting_2022 <- read_csv("batting2022.csv") |> mutate(Season = 2022L)
 all_batting <- bind_rows(batting_2021, batting_2022)
 ```
 
-On the **Hitting Graphs** tab, striking out looks like plain bad news: players with more strikeouts generally end up with lower batting averages (meaning they get hits less often). However, batting average counts a soft single and a game-winning home run as the exact same thing. When we look at all 4,406 college softball player seasons from 2021 and 2022 and count **home runs** instead, we see the opposite pattern: players who hit the most home runs usually strike out *more* than average, because swinging hard for the fences comes with more swings and misses.
+On the **Home** page, striking out looks like plain bad news: players with more strikeouts generally end up with lower batting averages (meaning they get hits less often). However, batting average counts a soft single and a game-winning home run as the exact same thing. When we look at all 4,406 college softball player seasons from 2021 and 2022 and count **home runs** instead, we see the opposite pattern: players who hit the most home runs usually strike out *more* than average, because swinging hard for the fences comes with more swings and misses.
 
 ```{r}
 #| fig-width: 8.8

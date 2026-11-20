@@ -12,9 +12,9 @@ website:
       - href: players.qmd
         text: Players
       - href: hitting.qmd
-        text: Hitting Graphs
+        text: Top Lineups
       - href: story.qmd
-        text: Power Hitting
+        text: Sluggers & Strikeouts
       - href: transfers.qmd
         text: Transfers & Breakouts
       - href: speed.qmd
