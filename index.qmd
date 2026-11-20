@@ -1,6 +1,6 @@
 ---
 title: "Inside NCAA Division I Softball Hitting (2021–2022)"
-subtitle: "Exploring Contact, Power, Speed, and the Transfer Portal Across 302 College Programs"
+subtitle: "How Strikeouts Shape Batting Average Across 4,406 Player-Seasons and 302 Programs"
 execute:
   echo: false
   message: false
@@ -10,14 +10,28 @@ execute:
 ```{r}
 library(tidyverse)
 library(plotly)
+library(jsonlite)
+library(htmltools)
 
-batting_2021 <- read_csv("batting2021.csv")
-batting_2022 <- read_csv("batting2022.csv")
+batting_2021 <- read_csv("batting2021.csv") |> mutate(Season = 2021L)
+batting_2022 <- read_csv("batting2022.csv") |> mutate(Season = 2022L)
+all_batting <- bind_rows(batting_2021, batting_2022)
+
+fit_2021 <- lm(BA ~ K, data = batting_2021)
+fit_2022 <- lm(BA ~ K, data = batting_2022)
 ```
 
-Welcome! What makes an elite college softball offense—putting the bat on the ball, swinging for the fences, stealing every base in sight, or landing a star from the transfer portal? Using **4,406 individual player-seasons** across **302 NCAA Division I programs** from the 2021 and 2022 seasons, this site lets you dig into the stories and interactive tools behind modern college softball hitting.
+:::: {.home-hero}
+Welcome! In college softball, putting the bat on the ball is the first test of every offense—yet across **4,406 individual player-seasons** and **302 NCAA Division I programs** in 2021 and 2022, hitters succeeded in very different ways. Start with the two interactive **Batting Average vs. Strikeouts** charts below, inspect the hitters who beat the red trendline, and explore the rest of the site to see how lineups, power, transfers, and speed fit together.
 
-:::: {style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:0.8rem; margin:1.25rem 0 1.5rem 0;"}
+::: {.home-hero-actions}
+[Jump to Chart Outlier Explorer &darr;](#explore-the-chart-outliers-red-trendline){.home-hero-btn .primary}
+[Compare Players Head-to-Head](players.html){.home-hero-btn .secondary}
+[Browse Top Lineups](hitting.html){.home-hero-btn .secondary}
+:::
+::::
+
+:::: {style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:0.8rem; margin:1.1rem 0 1.6rem 0;"}
 
 ::: {.stat-tile}
 ::: {.stat-tile-label}
@@ -27,65 +41,63 @@ Player-Seasons
 4,406
 :::
 ::: {.stat-tile-sub}
-2021 & 2022 NCAA D1
+302 D1 colleges
 :::
 :::
 
 ::: {.stat-tile}
 ::: {.stat-tile-label}
-D1 Colleges
+Average BA
 :::
 ::: {.stat-tile-value}
-302
+.279
 :::
 ::: {.stat-tile-sub}
-Every D1 conference
+.280 ('21) &middot; .278 ('22)
 :::
 :::
 
 ::: {.stat-tile}
 ::: {.stat-tile-label}
-Total Hits
+Avg Strikeouts
 :::
 ::: {.stat-tile-value}
-155,722
+21.0
 :::
 ::: {.stat-tile-sub}
-.279 average BA
+19 ('21) &rarr; 23 ('22)
 :::
 :::
 
 ::: {.stat-tile}
 ::: {.stat-tile-label}
-Home Runs
+Trendline Slope
 :::
 ::: {.stat-tile-value}
-16,827
+-.014
 :::
 ::: {.stat-tile-sub}
-Led by Oklahoma (303)
+BA change per +10 Ks
 :::
 :::
 
 ::: {.stat-tile}
 ::: {.stat-tile-label}
-Stolen Bases
+Lowest K Rate
 :::
 ::: {.stat-tile-value}
-21,328
+1.0%
 :::
 ::: {.stat-tile-sub}
-83.5% success rate
+2 Ks in 201 PA
 :::
 :::
 
 ::::
 
-## Strikeouts vs. Batting Average (2021–2022)
+## 2021 Batting Average vs. Strikeouts
 
-How does striking out (`K`) relate to batting average (`BA`—the share of official at-bats that result in a hit) for NCAA Division I college softball players in 2021 and 2022? Hover over any dot on the charts below to see a player's name, college, batting average, and strikeout total.
-
-### 2021 Batting Average vs. Strikeouts
+How does striking out (`K`) relate to batting average (`BA`—the share of official at-bats that result in a hit)? Hover over any dot on the 2021 and 2022 charts below to see a player's name, college, batting average, and strikeout total, or drag a box to zoom in on crowded clusters.
 
 ```{r}
 p_2021 <- batting_2021 |>
@@ -97,7 +109,7 @@ p_2021 <- batting_2021 |>
       "<b>", Player, " (", Team, ")</b>",
       "<br>Batting Avg: ", sprintf("%.3f", BA),
       "<br>Strikeouts: ", K,
-      "<br>Home Runs: ", HR, " | OPS: ", sprintf("%.3f", OPS)
+      "<br>Hits: ", H, " | Home Runs: ", HR
     )
   )) +
   geom_point(alpha = 0.6) +
@@ -119,9 +131,9 @@ ggplotly(p_2021, tooltip = "text", height = 460) |>
   )
 ```
 
-In the 2021 season (2,131 players), the typical player hit **.280** (getting a hit in 28% of their at-bats) and struck out about **19 times**. The downward-sloping red line shows that players who struck out more often generally had slightly lower batting averages, though plenty of everyday hitters still hit well even with 20 to 40 strikeouts.
+In the 2021 season (2,131 players), the typical player hit **.280** (getting a hit in 28% of their at-bats) and struck out about **19 times**. Each additional 10 strikeouts along the downward-sloping red line corresponded to roughly a **14-point drop (`-.014`) in batting average**, though plenty of everyday hitters stayed well above the red line even with 20 to 40 strikeouts.
 
-### 2022 Batting Average vs. Strikeouts
+## 2022 Batting Average vs. Strikeouts
 
 ```{r}
 p_2022 <- batting_2022 |>
@@ -133,7 +145,7 @@ p_2022 <- batting_2022 |>
       "<b>", Player, " (", Team, ")</b>",
       "<br>Batting Avg: ", sprintf("%.3f", BA),
       "<br>Strikeouts: ", K,
-      "<br>Home Runs: ", HR, " | OPS: ", sprintf("%.3f", OPS)
+      "<br>Hits: ", H, " | Home Runs: ", HR
     )
   )) +
   geom_point(alpha = 0.6) +
@@ -155,14 +167,229 @@ ggplotly(p_2022, tooltip = "text", height = 460) |>
   )
 ```
 
-In the 2022 season (2,275 players), the average batting average stayed nearly identical at **.278**, while strikeouts climbed to **23 per player** as teams played fuller schedules after the pandemic. Just like in 2021, striking out more often was linked to a lower batting average, dropping off most noticeably once players passed 40 strikeouts.
+In the 2022 season (2,275 players), the average batting average stayed nearly identical at **.278**, while strikeouts climbed to **23 per player** as teams returned to full post-pandemic schedules. Just like in 2021, every +10 strikeouts lowered expected batting average by about **15 points (`-.015`)**, dropping off steepest past 40 strikeouts.
 
-## Explore the Site
+## Explore the Chart Outliers & Red Trendline
 
-Pick any tab in the navigation bar—or jump straight in below:
+Who are the standout dots on the two graphs above? Click any **Chart Zone** below—or type a college or player's name—to inspect the hitters in the **upper-left corner** (high `BA`, tiny `K`), on the **far-left edge** (toughest in the country to strike out), or **defying the red trendline** (hitting `.350+` despite `30+` strikeouts):
 
-- **[Players](players.qmd) *(Interactive Explorer)*:** Search all 3,200+ players and 302 colleges across 2021 and 2022, complete with school crests, transfer badges, and combined career lines.
-- **[Top Lineups](hitting.qmd) *(Story + Explorer)*:** Compare the 15 strongest single-season offenses, explore all 479 Division I lineups on an interactive `OBP` vs. `SLG` chart, and search/rank every college by power, speed, or `OPS`.
-- **[Sluggers & Strikeouts](story.qmd) *(Data Story)*:** Discover why home-run power normally costs strikeouts—and how Oklahoma's Jocelyn Alo and Tiare Jennings broke that rule completely.
-- **[Transfers & Breakouts](transfers.qmd) *(Story + Explorer)*:** Follow the 72 players who switched Division I colleges between 2021 and 2022, compare them with 1,063 returning teammates, and browse the biggest year-over-year breakouts.
-- **[Speed & Power](speed.qmd) *(Story + Explorer)*:** See why college runners succeed on 83.5% of steal attempts on 60-foot basepaths, and meet the ultra-rare "15 HR / 15 SB" club.
+```{r}
+chart_explorer_rows <- bind_rows(
+  batting_2021 |> mutate(expBA = as.numeric(predict(fit_2021, newdata = batting_2021))),
+  batting_2022 |> mutate(expBA = as.numeric(predict(fit_2022, newdata = batting_2022)))
+) |>
+  filter(PA >= 100) |>
+  transmute(
+    Player,
+    Team,
+    Season,
+    PA,
+    H,
+    K,
+    Kpct = round(100 * K / PA, 1),
+    BA = round(BA, 3),
+    diffBA = round(BA - expBA, 3),
+    HR
+  )
+
+explorer_json <- toJSON(chart_explorer_rows, dataframe = "rows", auto_unbox = TRUE)
+
+tagList(
+  tags$div(
+    class = "leader-controls-bar",
+    tags$div(
+      class = "leader-pills",
+      id = "chart-zone-pills",
+      tags$button(
+        type = "button",
+        class = "leader-pill active",
+        `data-zone` = "topleft",
+        "Upper-Left Stars (.400+ BA, ≤10 K)"
+      ),
+      tags$button(
+        type = "button",
+        class = "leader-pill",
+        `data-zone` = "defy",
+        "Defying the Red Line (30+ K, .350+ BA)"
+      ),
+      tags$button(
+        type = "button",
+        class = "leader-pill",
+        `data-zone` = "toughk",
+        "Toughest to Strike Out (Lowest K%)"
+      ),
+      tags$button(
+        type = "button",
+        class = "leader-pill",
+        `data-zone` = "topba",
+        "Highest Batting Avg"
+      )
+    )
+  ),
+  tags$div(
+    class = "player-explorer-controls",
+    style = "margin-top:0.5rem;",
+    tags$div(
+      class = "player-control-group",
+      tags$label(`for` = "home-chart-season", "Which Graph"),
+      tags$select(
+        id = "home-chart-season",
+        tags$option(value = "all", "Both Graphs (2021 & 2022)"),
+        tags$option(value = "2021", "2021 Graph Only"),
+        tags$option(value = "2022", "2022 Graph Only")
+      )
+    ),
+    tags$div(
+      class = "player-control-group",
+      tags$label(`for` = "home-chart-search", "Find Any Player or College on the Graphs"),
+      tags$input(
+        id = "home-chart-search",
+        type = "search",
+        placeholder = "Type a school or player (e.g. Oklahoma, Florida, UCLA)..."
+      )
+    )
+  ),
+  tags$div(id = "home-zone-note", class = "player-match-count"),
+  tags$div(
+    class = "player-card",
+    tags$div(
+      class = "player-stats-table-wrap",
+      tags$table(
+        class = "player-stats-table",
+        tags$thead(
+          tags$tr(
+            tags$th("Player"),
+            tags$th("College"),
+            tags$th("Season"),
+            tags$th("PA"),
+            tags$th("Hits"),
+            tags$th("Strikeouts (K)"),
+            tags$th("K%"),
+            tags$th("Batting Avg"),
+            tags$th("vs. Red Line")
+          )
+        ),
+        tags$tbody(id = "home-chart-tbody")
+      )
+    )
+  ),
+  tags$script(id = "home-chart-data", type = "application/json", HTML(explorer_json)),
+  tags$script(HTML("
+    (function() {
+      const rows = JSON.parse(document.getElementById('home-chart-data').textContent);
+      const pillsWrap = document.getElementById('chart-zone-pills');
+      const seasonSel = document.getElementById('home-chart-season');
+      const searchIn = document.getElementById('home-chart-search');
+      const noteEl = document.getElementById('home-zone-note');
+      const tbody = document.getElementById('home-chart-tbody');
+      let zone = 'topleft';
+
+      const zoneDescriptions = {
+        topleft: 'Upper-left corner of the charts: hitters with a .400+ BA and 10 or fewer strikeouts (min. 100 PA).',
+        defy: 'High above the red line on the right side: hitters with 30+ strikeouts who still batted .350+ (min. 100 PA).',
+        toughk: 'Far-left edge of the charts: hardest everyday hitters in the nation to strike out by K% (min. 100 PA).',
+        topba: 'Very top of the charts: highest single-season batting averages across Division I (min. 100 PA).'
+      };
+
+      function fmt3(x) { return Number(x).toFixed(3); }
+      function fmtDiff(x) {
+        const v = Number(x);
+        const s = v.toFixed(3);
+        return v > 0 ? '+' + s : s;
+      }
+
+      function renderTable() {
+        const yr = seasonSel.value;
+        const q = searchIn.value.trim().toLowerCase();
+
+        let list = rows.filter(r => {
+          if (yr !== 'all' && String(r.Season) !== yr) return false;
+          if (q) {
+            return (r.Player + ' ' + r.Team + ' ' + r.Season).toLowerCase().includes(q);
+          }
+          if (zone === 'topleft') return r.BA >= 0.400 && r.K <= 10;
+          if (zone === 'defy') return r.K >= 30 && r.BA >= 0.350;
+          return true;
+        });
+
+        if (q) {
+          list.sort((a, b) => b.BA - a.BA || a.K - b.K);
+          noteEl.textContent = `Showing ${list.length} everyday hitter${list.length === 1 ? '' : 's'} matching \"${searchIn.value.trim()}\" (min. 100 PA) — sorted by Batting Avg`;
+        } else {
+          if (zone === 'toughk') {
+            list.sort((a, b) => a.Kpct - b.Kpct || b.BA - a.BA);
+            list = list.slice(0, 15);
+          } else {
+            list.sort((a, b) => b.BA - a.BA || a.K - b.K);
+            if (zone === 'topba') list = list.slice(0, 15);
+          }
+          noteEl.textContent = `${zoneDescriptions[zone]} Showing ${list.length} player-seasons.`;
+        }
+
+        tbody.innerHTML = list.map(r => {
+          const diffColor = r.diffBA > 0 ? '#15803d' : (r.diffBA < 0 ? '#b91c1c' : '#475569');
+          return `<tr>
+            <td><strong>${r.Player}</strong></td>
+            <td style='text-align:left;'>${r.Team}</td>
+            <td>${r.Season}</td>
+            <td>${r.PA}</td>
+            <td>${r.H}</td>
+            <td><strong>${r.K}</strong></td>
+            <td>${r.Kpct.toFixed(1)}%</td>
+            <td><strong>${fmt3(r.BA)}</strong></td>
+            <td style='color:${diffColor};font-weight:700;'>${fmtDiff(r.diffBA)}</td>
+          </tr>`;
+        }).join('');
+      }
+
+      pillsWrap.addEventListener('click', e => {
+        const btn = e.target.closest('.leader-pill');
+        if (!btn) return;
+        zone = btn.getAttribute('data-zone');
+        pillsWrap.querySelectorAll('.leader-pill').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        searchIn.value = '';
+        renderTable();
+      });
+
+      seasonSel.addEventListener('change', renderTable);
+      searchIn.addEventListener('input', renderTable);
+      renderTable();
+    })();
+  "))
+)
+```
+
+## Keep Exploring the Story
+
+Want to see what happens beyond batting average and strikeouts? Jump into any section below:
+
+```{=html}
+<div class="explore-grid">
+  <a class="explore-card" href="players.html">
+    <span class="explore-card-tag">Explorer + Matchups</span>
+    <h3>Players &amp; Head-to-Head</h3>
+    <p>Look up any of the 3,200+ hitters on the charts above with school crests, or compare two players side by side.</p>
+  </a>
+  <a class="explore-card" href="story.html">
+    <span class="explore-card-tag">Data Story</span>
+    <h3>Sluggers &amp; Strikeouts</h3>
+    <p>Why do high-strikeout hitters stay in the lineup? See how home-run power flips the strikeout curve—and how Jocelyn Alo broke it.</p>
+  </a>
+  <a class="explore-card" href="hitting.html">
+    <span class="explore-card-tag">Story + Leaderboard</span>
+    <h3>Top Lineups</h3>
+    <p>Zoom out from individual batters to all 479 college lineups, ranked by weighted OPS, home runs, and stolen bases.</p>
+  </a>
+  <a class="explore-card" href="transfers.html">
+    <span class="explore-card-tag">Story + Explorer</span>
+    <h3>Transfers &amp; Breakouts</h3>
+    <p>Track the 72 players who switched D1 colleges between the 2021 and 2022 charts and see who made the biggest jump.</p>
+  </a>
+  <a class="explore-card" href="speed.html">
+    <span class="explore-card-tag">Story + Explorer</span>
+    <h3>Speed &amp; Power</h3>
+    <p>See how slap-hitting speedsters and 10+ HR sluggers split on 60-foot basepaths—and meet the 15 HR / 15 SB club.</p>
+  </a>
+</div>
+```

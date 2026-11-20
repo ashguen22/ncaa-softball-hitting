@@ -1,12 +1,15 @@
 ---
 title: "About the Players"
+subtitle: "Interactive NCAA Division I Player Profiles & Head-to-Head Matchup Explorer (2021–2022)"
 execute:
   echo: false
   message: false
   warning: false
 ---
 
-Search for any NCAA Division I softball player across **both the 2021 and 2022 seasons** using the search bar, filter by college or season, or select a player from the dropdown menu to view their college crest and complete 2021, 2022, and combined statistics.
+## Player Profile Explorer
+
+Search for any NCAA Division I softball player across **both the 2021 and 2022 seasons** using the search bar, filter by college or season, or select a player from the dropdown menu to view their college crest and complete 2021, 2022, and combined statistics—or send any player down to the **Head-to-Head Comparison** tool below.
 
 ```{r}
 library(tidyverse)
@@ -129,7 +132,52 @@ tagList(
     )
   ),
   tags$div(id = "player-match-count", class = "player-match-count"),
-  tags$div(id = "player-profile-card", class = "player-card"),
+  tags$div(id = "player-profile-card", class = "player-card")
+)
+```
+
+## Head-to-Head Player Comparison
+
+Pick any two hitters across Division I to compare their numbers side by side—or use the **+ Compare as Player A / B** buttons on the profile card above.
+
+```{r}
+tagList(
+  tags$div(
+    class = "player-explorer-controls",
+    tags$div(
+      class = "player-control-group",
+      tags$label(`for` = "cmp-a-search", "Player A (Blue) — Search & Select"),
+      tags$input(
+        id = "cmp-a-search",
+        type = "search",
+        placeholder = "Filter Player A by name or college...",
+        style = "margin-bottom:0.4rem;"
+      ),
+      tags$select(id = "cmp-a-select")
+    ),
+    tags$div(
+      class = "player-control-group",
+      tags$label(`for` = "cmp-b-search", "Player B (Crimson) — Search & Select"),
+      tags$input(
+        id = "cmp-b-search",
+        type = "search",
+        placeholder = "Filter Player B by name or college...",
+        style = "margin-bottom:0.4rem;"
+      ),
+      tags$select(id = "cmp-b-select")
+    ),
+    tags$div(
+      class = "player-control-group",
+      tags$label(`for` = "cmp-season", "Season to Compare"),
+      tags$select(
+        id = "cmp-season",
+        tags$option(value = "combined", "2021–22 Combined Totals"),
+        tags$option(value = "2022", "2022 Season Only"),
+        tags$option(value = "2021", "2021 Season Only")
+      )
+    )
+  ),
+  tags$div(id = "player-compare-card", class = "player-card"),
   tags$script(
     id = "softball-player-data",
     type = "application/json",
@@ -323,6 +371,10 @@ tagList(
               ${collegeBadgesHtml}
               <span class='player-seasons-pill'>${escapeHtml(seasonBadgeText)}</span>
             </div>
+            <div class='player-compare-actions'>
+              <button type='button' class='compare-quick-btn' id='set-cmp-a'>+ Compare as Player A</button>
+              <button type='button' class='compare-quick-btn' id='set-cmp-b'>+ Compare as Player B</button>
+            </div>
           </div>
           <div class='player-highlights'>
             ${tilesHtml}
@@ -334,6 +386,13 @@ tagList(
             </` + `table>
           </div>
         `;
+
+        document.getElementById('set-cmp-a').addEventListener('click', () => {
+          setComparePlayer('A', player.key);
+        });
+        document.getElementById('set-cmp-b').addEventListener('click', () => {
+          setComparePlayer('B', player.key);
+        });
       }
 
       let isInitialLoad = true;
@@ -392,7 +451,178 @@ tagList(
         renderPlayer(playerMap.get(playerSelect.value));
       });
 
+      // Head-to-Head Comparison Logic
+      const cmpASearch = document.getElementById('cmp-a-search');
+      const cmpASelect = document.getElementById('cmp-a-select');
+      const cmpBSearch = document.getElementById('cmp-b-search');
+      const cmpBSelect = document.getElementById('cmp-b-select');
+      const cmpSeason = document.getElementById('cmp-season');
+      const cmpCard = document.getElementById('player-compare-card');
+
+      function populateCompareSelect(selectEl, query, preferredKey) {
+        const q = query.trim().toLowerCase();
+        const matches = q ? players.filter(p => p.searchText.includes(q)) : players;
+        selectEl.innerHTML = '';
+        const frag = document.createDocumentFragment();
+        matches.forEach(p => {
+          const opt = document.createElement('option');
+          opt.value = p.key;
+          const yrTag = (p.bySeason[2021] && p.bySeason[2022]) ? '2021–22' : String(p.seasons[0].Season);
+          opt.textContent = `${p.name} — ${p.teamLabel} (${yrTag})`;
+          frag.appendChild(opt);
+        });
+        selectEl.appendChild(frag);
+        if (matches.length > 0) {
+          selectEl.value = matches.some(p => p.key === preferredKey) ? preferredKey : matches[0].key;
+        }
+      }
+
+      function getModeStats(player, mode) {
+        if (!player) return null;
+        if (mode === '2021') return player.bySeason[2021] || null;
+        if (mode === '2022') return player.bySeason[2022] || null;
+        return computeCombined(player.seasons);
+      }
+
+      function renderFighterHeader(player, stats, sideClass) {
+        const latestTeam = stats && stats.Team && !stats.Team.includes('/')
+          ? stats.Team
+          : player.teams[player.teams.length - 1];
+        const fallback = makeFallbackSvg(latestTeam);
+        const logoSrc = logos[latestTeam] ? logos[latestTeam] : fallback;
+        const subBadge = escapeHtml(player.teamLabel);
+        return `
+          <div class='compare-fighter ${sideClass}'>
+            <div class='player-logo-wrap' style='width:68px;height:68px;'>
+              <img src='${escapeHtml(logoSrc)}' alt='${escapeHtml(latestTeam)} crest' onerror=\"this.onerror=null;this.src='${fallback}';\" />
+            </div>
+            <div>
+              <h4>${escapeHtml(player.name)}</h4>
+              <span class='player-college-badge'>${subBadge}</span>
+            </div>
+          </div>
+        `;
+      }
+
+      function renderComparison() {
+        const pA = playerMap.get(cmpASelect.value);
+        const pB = playerMap.get(cmpBSelect.value);
+        if (!pA || !pB) {
+          cmpCard.innerHTML = '<p style=\"margin:0;color:#6c757d;\">Select two players above to compare their statistics.</p>';
+          return;
+        }
+
+        const mode = cmpSeason.value;
+        const sA = getModeStats(pA, mode);
+        const sB = getModeStats(pB, mode);
+        const modeLabel = mode === 'combined' ? '2021–22 Combined' : `${mode} Season`;
+
+        const metrics = [
+          { key: 'OPS', label: 'OPS', isRate: true, maxScale: 1.75, lowerBetter: false },
+          { key: 'BA', label: 'Batting Avg', isRate: true, maxScale: 0.55, lowerBetter: false },
+          { key: 'OBP', label: 'On-Base Pct', isRate: true, maxScale: 0.68, lowerBetter: false },
+          { key: 'SLG', label: 'Slugging', isRate: true, maxScale: 1.25, lowerBetter: false },
+          { key: 'HR', label: 'Home Runs', isRate: false, maxScale: null, lowerBetter: false },
+          { key: 'RBI', label: 'RBIs', isRate: false, maxScale: null, lowerBetter: false },
+          { key: 'H', label: 'Hits', isRate: false, maxScale: null, lowerBetter: false },
+          { key: 'R', label: 'Runs', isRate: false, maxScale: null, lowerBetter: false },
+          { key: 'BB', label: 'Walks', isRate: false, maxScale: null, lowerBetter: false },
+          { key: 'SB', label: 'Stolen Bases', isRate: false, maxScale: null, lowerBetter: false },
+          { key: 'K', label: 'Strikeouts', isRate: false, maxScale: null, lowerBetter: true }
+        ];
+
+        let bodyHtml = '';
+        if (!sA || !sB) {
+          const missingWho = !sA && !sB
+            ? `Neither ${escapeHtml(pA.name)} nor ${escapeHtml(pB.name)} has`
+            : (!sA ? `${escapeHtml(pA.name)} does not have` : `${escapeHtml(pB.name)} does not have`);
+          bodyHtml = `<p style='margin:0.5rem 0 0 0;color:#6c757d;'>${missingWho} stats recorded for the <strong>${modeLabel}</strong>. Switch <em>Season to Compare</em> to <strong>2021–22 Combined Totals</strong> or pick another year.</p>`;
+        } else {
+          const barsHtml = metrics.map(m => {
+            const vA = Number(sA[m.key]) || 0;
+            const vB = Number(sB[m.key]) || 0;
+            const denom = m.maxScale ? Math.max(m.maxScale, vA, vB) : Math.max(1, vA, vB);
+            const pctA = Math.min(100, Math.round((vA / denom) * 100));
+            const pctB = Math.min(100, Math.round((vB / denom) * 100));
+            const dispA = m.isRate ? fmtRate(vA) : vA;
+            const dispB = m.isRate ? fmtRate(vB) : vB;
+
+            let winA = false;
+            let winB = false;
+            if (Math.abs(vA - vB) > 1e-6) {
+              if (m.lowerBetter) {
+                winA = vA < vB;
+                winB = vB < vA;
+              } else {
+                winA = vA > vB;
+                winB = vB > vA;
+              }
+            }
+
+            return `
+              <div class='compare-metric-row'>
+                <div class='compare-val left ${winA ? 'win-a' : ''}'>${dispA}</div>
+                <div class='compare-half-track left'>
+                  <div class='compare-fill-a' style='width:${pctA}%;'></div>
+                </div>
+                <div class='compare-metric-label'>${m.label}${m.lowerBetter ? ' *' : ''}</div>
+                <div class='compare-half-track right'>
+                  <div class='compare-fill-b' style='width:${pctB}%;'></div>
+                </div>
+                <div class='compare-val right ${winB ? 'win-b' : ''}'>${dispB}</div>
+              </div>
+            `;
+          }).join('');
+
+          bodyHtml = `
+            <div class='compare-bars'>${barsHtml}</div>
+            <div style='margin-top:0.85rem;font-size:0.78rem;color:#64748b;text-align:center;'>
+              Comparing <strong>${modeLabel}</strong> (${escapeHtml(pA.name)}: ${sA.GP} GP, ${sA.PA} PA &middot; ${escapeHtml(pB.name)}: ${sB.GP} GP, ${sB.PA} PA). Bold color marks the leader in each stat (* fewer strikeouts wins).
+            </div>
+          `;
+        }
+
+        cmpCard.innerHTML = `
+          <div class='compare-matchup-header'>
+            ${renderFighterHeader(pA, sA, 'left')}
+            <div class='compare-vs-badge'>VS</div>
+            ${renderFighterHeader(pB, sB, 'right')}
+          </div>
+          ${bodyHtml}
+        `;
+      }
+
+      function setComparePlayer(slot, key) {
+        if (slot === 'A') {
+          cmpASearch.value = '';
+          populateCompareSelect(cmpASelect, '', key);
+        } else {
+          cmpBSearch.value = '';
+          populateCompareSelect(cmpBSelect, '', key);
+        }
+        renderComparison();
+        cmpCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+
+      const defaultA = (players.find(p => p.name === 'Jocelyn Alo') || players[0]).key;
+      const defaultB = (players.find(p => p.name === 'Addison Barnard') || players[Math.min(1, players.length - 1)]).key;
+      populateCompareSelect(cmpASelect, '', defaultA);
+      populateCompareSelect(cmpBSelect, '', defaultB);
+
+      cmpASearch.addEventListener('input', () => {
+        populateCompareSelect(cmpASelect, cmpASearch.value, cmpASelect.value);
+        renderComparison();
+      });
+      cmpBSearch.addEventListener('input', () => {
+        populateCompareSelect(cmpBSelect, cmpBSearch.value, cmpBSelect.value);
+        renderComparison();
+      });
+      cmpASelect.addEventListener('change', renderComparison);
+      cmpBSelect.addEventListener('change', renderComparison);
+      cmpSeason.addEventListener('change', renderComparison);
+
       updateDropdown();
+      renderComparison();
     })();
   "))
 )
